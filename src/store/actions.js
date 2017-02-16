@@ -50,13 +50,25 @@ export default {
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
   },
 
-  saveItem: (store) => {
-    const request = form.create(store)
-    return api.post('http://risiko.dev/vandringer/funn/ny/', request)
+  saveItem: (context) => {
+    const request = form.create(context)
+    const config = {
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+    }
+
+    // debug ->
+    // let formdata = {}
+    // for (var pair of request.entries()) {
+    //   formdata[pair[0]] = pair[1]
+    // }
+    // console.log(formdata)
+    // <- end debug
+
+    return api.post(context.state.Xconfig.apiUrl, request, config)
       .then((response) => {
-        store.commit('APPEND_ITEMS', response)
-        store.commit('TOGGLE_HIGHLIGHT_FIRST')
-        store.commit('RESET_NEW_ITEM')
+        context.dispatch('getItem', response.data.id)
+        context.commit('TOGGLE_HIGHLIGHT_FIRST')
+        context.commit('RESET_NEW_ITEM')
       })
       .catch((error) => console.log(error))
   }

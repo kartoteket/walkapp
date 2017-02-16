@@ -80,7 +80,7 @@ export default new Vuex.Store({
       state.items = data
     },
     APPEND_ITEMS: (state, data) => {
-      state.items.push(data)
+      state.items.unshift(data) // new on top
     },
     RESET_NEW_ITEM: (state) => {
       state.newItem = defaultItem
@@ -94,7 +94,6 @@ export default new Vuex.Store({
     SET_MESSAGE: (state, data) => {
       state.newItem.message = data
     },
-
     SET_CURRENT_POSITION: (state, data) => {
       state.currentPosition = data
     },
