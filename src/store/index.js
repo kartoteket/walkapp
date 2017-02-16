@@ -5,20 +5,22 @@ import actions from './actions.js'
 
 Vue.use(Vuex)
 
+const defaultItem = {
+  message: '',
+  image: null,
+  position: {
+    address: '',
+    lat: null,
+    lng: null
+  }
+}
+
 export default new Vuex.Store({
   state: {
     user: {},
     walk: {},
     items: [],
-    newItem: {
-      message: '',
-      image: null,
-      position: {
-        address: 'Trondheimsveien 4, 0561 Oslo, Norway',
-        lat: 59.9189238,
-        lng: 10.762951199999975
-      }
-    },
+    newItem: defaultItem,
     currentPosition: {},
     Xconfig: {
       apiUrl: 'https://risiko.dev/api',
@@ -76,8 +78,8 @@ export default new Vuex.Store({
     APPEND_ITEMS: (state, data) => {
       state.items.push(data)
     },
-    RESET_ITEM: (state) => {
-      state.newItem = {}
+    RESET_NEW_ITEM: (state) => {
+      state.newItem = defaultItem
     },
     SET_POSITION: (state, data) => {
       state.newItem.position = data
