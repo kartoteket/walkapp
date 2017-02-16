@@ -3,29 +3,39 @@ import form from '../utils/form.js'
 
 // NB, maybe better to pass in the url when we map the Action to my component, so we can handle any dynamic urls.
 export default {
-  initApp: (store) => {
-    store.dispatch('getItems')
-    store.dispatch('getWalk')
-    store.dispatch('getUser')
-    store.dispatch('getLocation')
+  initApp: (context) => {
+    context.dispatch('getItems')
+    context.dispatch('getWalk')
+    context.dispatch('getUser')
+    context.dispatch('getLocation')
   },
-  getItems: (store) => {
-    return api.get(store.state.Xconfig.apiUrl + '/walks/' + store.getters.walkId + '/items.json')
-      .then((response) => store.commit('SET_ITEMS', response.data))
+
+  getWalk: (context) => {
+    return api.get(context.state.Xconfig.apiUrl + '/walks/' + context.getters.walkId + '.json')
+      .then((response) => context.commit('SET_WALK', response))
       .catch((error) => console.log(error))
   },
-  getWalk: (store) => {
-    return api.get(store.state.Xconfig.apiUrl + '/walks/' + store.getters.walkId + '.json')
-      .then((response) => store.commit('SET_WALK', response))
+
+  getUser: (context) => {
+    return api.get(context.state.Xconfig.apiUrl + '/user/me.json')
+      .then((response) => context.commit('SET_USER', response))
       .catch((error) => console.log(error))
   },
-  getUser: (store) => {
-    return api.get(store.state.Xconfig.apiUrl + '/user/me.json')
-      .then((response) => store.commit('SET_USER', response))
+
+  getItem: (context, id) => {
+    return api.get(context.state.Xconfig.apiUrl + '/walks/items/' + id + '.json')
+      .then((response) => context.commit('APPEND_ITEMS', response))
       .catch((error) => console.log(error))
   },
-  getLocation: (store) => {
-    var geoOptions = store.state.Xconfig.geoConfig
+
+  getItems: (context) => {
+    return api.get(context.state.Xconfig.apiUrl + '/walks/' + context.getters.walkId + '/items.json')
+      .then((response) => context.commit('SET_ITEMS', response.data))
+      .catch((error) => console.log(error))
+  },
+
+  getLocation: (context) => {
+    var geoOptions = context.state.Xconfig.geoConfig
 
     var geoError = function (error) {
       // error.code can be: 0: unknown error, 1: permission denied, 2: position unavailable (error response from location provider), 3: timed out
@@ -34,7 +44,7 @@ export default {
 
     var geoSuccess = function (position) {
       // console.log(position, (that.currentPosition.timestamp === position.timestamp ? 'cached' : 'new'))
-      store.commit('SET_CURRENT_POSITION', position)
+      context.commit('SET_CURRENT_POSITION', position)
     }
 
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
