@@ -44,6 +44,10 @@ export default new Vuex.Store({
       return state.route.params.walk_id
     },
 
+    userId: state => {
+      return state.user.id
+    },
+
     itemsCount: state => {
       return state.items.length
     },
