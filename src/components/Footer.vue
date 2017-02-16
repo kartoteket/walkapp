@@ -8,7 +8,7 @@
       <template v-else-if="route === 'save'">
           <div class="webapp__footer">
               <router-link class="button width-25%" :to="{ name: 'register'}">Tilbake</router-link>
-              <button v-on:click.prevent="saveFunn" class="button button--primary" v-bind:class="{ 'button--disabled' : draft }">
+              <button v-on:click.prevent="submit" class="button button--primary" v-bind:class="{ 'button--disabled' : draft }">
                   {{ submitButtonCaption }}
               </button>
               <a v-if="showLogin" :href="loginUrl" target="_blank" class="button button--primary">Logg inn på ny</a>
@@ -27,7 +27,7 @@
 export default {
   name: 'footer-component',
 
-  props: ['readyToSubmit', 'submitButtonCaption', 'selectLocation', 'draft', 'saveFunn', 'showLogin'],
+  props: ['readyToSubmit', 'submitButtonCaption', 'selectLocation', 'draft', 'submit', 'showLogin'],
 
   data: function () {
     return {

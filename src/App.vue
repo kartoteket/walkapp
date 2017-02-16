@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <router-view class="webapp"
-        :config="config"
         :state="state"
         :vandring="vandring"
         :items="items"
@@ -17,8 +16,8 @@
 
 <script>
 
-import _ from 'lodash'
-import axios from 'axios'
+// import _ from 'lodash'
+// import axios from 'axios'
 import mixins from './mixins'
 
 export default {
@@ -45,20 +44,20 @@ export default {
       vandring: {},
       items: [],
       user: {},
-      openMenu: false,
-      config: {
-        // itemsSectionId: 8,
-        // mapConfig: {
-        //   zoomBase: 10,
-        //   zoomLow: 5,
-        //   zoomHigh: 20
-        // },
-        // geoConfig: {
-        //   maximumAge: 5 * 60 * 1000,
-        //   timeout: 10 * 1000,
-        //   enableHighAccuracy: true
-        // }
-      }
+      openMenu: false
+      // config: {
+      //   // itemsSectionId: 8,
+      //   // mapConfig: {
+      //   //   zoomBase: 10,
+      //   //   zoomLow: 5,
+      //   //   zoomHigh: 20
+      //   // },
+      //   // geoConfig: {
+      //   //   maximumAge: 5 * 60 * 1000,
+      //   //   timeout: 10 * 1000,
+      //   //   enableHighAccuracy: true
+      //   // }
+      // }
     }
   },
 
@@ -104,73 +103,73 @@ export default {
     },
     setUser: function (user) {
       this.user = user
-    },
-
-    saveFunn: function () {
-      var that = this
-      var form = new FormData()
-
-      var saveSuccess = function (response) {
-        // correctly format position. TODO: either make this a util or edit API to output in the correct format
-        response.data.position = {'lat': +response.data.position[0], 'lng': +response.data.position[1]}
-
-        // update items array in app cache
-        if (_.isArray(that.items)) {
-          that.items.unshift(response.data)
-        }
-
-        // highlight and resets
-        this.$store.commit('TOGGLE_HIGHLIGHT_FIRST') // TODO TEST THIS
-        that.message = ''
-        that.previewImg = ''
-
-        that.$router.push({ name: 'Map' })
-      }
-
-      var saveError = function (error) {
-        if (error.response) {
-          // The request was made, but the server responded with a status code that falls out of the range of 2xx
-          console.log(error.response.data)
-          console.log(error.response.status)
-          console.log(error.response.headers)
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message)
-        }
-        console.log(error.config)
-      }
-
-      form.append('action', 'entries/saveEntry')
-      form.append('redirect', 'api/walks/items/{id}.json') // Craft autoinjects the entryID... nice, he ?
-      form.append('locale', 'no')
-      form.append('enabled', '1')
-
-      form.append('sectionId', that.config.itemsSectionId)
-      form.append('fields[walk_item_parent][]', this.walkId)
-      form.append('fields[walk_item_priority]', 'high')
-
-      if (this.message) {
-        form.append('fields[walk_item_description]', this.message)
-      }
-
-      if (this.position.address) {
-        form.append('fields[walk_item_location][line1]', this.position.address)
-      }
-
-      if (this.position.lat && this.position.lng) {
-        form.append('fields[walk_item_location][latitude]', this.position.lat)
-        form.append('fields[walk_item_location][longitude]', this.position.lng)
-      }
-
-      if (this.image) {
-        form.append('fields[walk_item_photo]', this.image)
-      }
-
-      var data
-      data[window.csrfTokenName] = window.csrfTokenValue
-
-      axios.post('/vandringer/funn/ny/', form).then(saveSuccess).catch(saveError)
     }
+
+    // saveFunn: function () {
+    //   var that = this
+    //   var form = new FormData()
+
+    //   var saveSuccess = function (response) {
+    //     // correctly format position. TODO: either make this a util or edit API to output in the correct format
+    //     response.data.position = {'lat': +response.data.position[0], 'lng': +response.data.position[1]}
+
+    //     // update items array in app cache
+    //     if (_.isArray(that.items)) {
+    //       that.items.unshift(response.data)
+    //     }
+
+    //     // highlight and resets
+    //     this.$store.commit('TOGGLE_HIGHLIGHT_FIRST') // TODO TEST THIS
+    //     that.message = ''
+    //     that.previewImg = ''
+
+    //     that.$router.push({ name: 'Map' })
+    //   }
+
+    //   var saveError = function (error) {
+    //     if (error.response) {
+    //       // The request was made, but the server responded with a status code that falls out of the range of 2xx
+    //       console.log(error.response.data)
+    //       console.log(error.response.status)
+    //       console.log(error.response.headers)
+    //     } else {
+    //       // Something happened in setting up the request that triggered an Error
+    //       console.log('Error', error.message)
+    //     }
+    //     console.log(error.config)
+    //   }
+
+    //   form.append('action', 'entries/saveEntry')
+    //   form.append('redirect', 'api/walks/items/{id}.json') // Craft autoinjects the entryID... nice, he ?
+    //   form.append('locale', 'no')
+    //   form.append('enabled', '1')
+
+    //   form.append('sectionId', that.config.itemsSectionId)
+    //   form.append('fields[walk_item_parent][]', this.walkId)
+    //   form.append('fields[walk_item_priority]', 'high')
+
+    //   if (this.message) {
+    //     form.append('fields[walk_item_description]', this.message)
+    //   }
+
+    //   if (this.position.address) {
+    //     form.append('fields[walk_item_location][line1]', this.position.address)
+    //   }
+
+    //   if (this.position.lat && this.position.lng) {
+    //     form.append('fields[walk_item_location][latitude]', this.position.lat)
+    //     form.append('fields[walk_item_location][longitude]', this.position.lng)
+    //   }
+
+    //   if (this.image) {
+    //     form.append('fields[walk_item_photo]', this.image)
+    //   }
+
+    //   var data
+    //   data[window.csrfTokenName] = window.csrfTokenValue
+
+    //   axios.post('/vandringer/funn/ny/', form).then(saveSuccess).catch(saveError)
+    // }
   },
 
   created: function () {
@@ -185,7 +184,7 @@ export default {
 
     // this.$store.dispatch('saveItem')
 
-    this.$on('saveFunn', this.saveFunn)
+    // this.$on('saveFunn', this.saveFunn)
     this.$on('setState', this.setState)
     this.$on('setImage', this.setImage)
     this.$on('setMessage', this.setMessage)

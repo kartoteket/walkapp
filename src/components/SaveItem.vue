@@ -45,7 +45,7 @@
 
     <footer-component
         :draft="draft"
-        :saveFunn="saveFunn"
+        :submit="submit"
         :submitButtonCaption="submitButtonCaption"
         :showLogin="showLogin"
     ></footer-component>
@@ -65,7 +65,7 @@ export default {
 
   data: function () {
     return {
-      localMessage: this.message,
+      // localMessage: this.message,
       imagePreview: null,
       hasFile: false,
       showLogin: false
