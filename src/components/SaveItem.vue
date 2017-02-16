@@ -79,7 +79,8 @@ export default {
       newItem: 'newItem',
       message: state => state.newItem.message,
       position: state => state.newItem.position,
-      image: state => state.newItem.image
+      image: state => state.newItem.image,
+      loading: state => state.loading
     }),
 
     // position: function () {
@@ -135,6 +136,13 @@ export default {
       setTimeout(function () {
         that.showLogin = !that.activeSession
       }, interval)
+    },
+
+    // Attempting to dealy re-routing until save/load is complete. Nt really perfect yet
+    loading: function (val, oldVal) {
+      if (oldVal) {
+        this.$router.push({name: 'map'})
+      }
     }
   },
 
@@ -151,8 +159,8 @@ export default {
     setTags: function () {
     },
 
-    saveFunn: function () {
-      console.log('SAVE!!!!')
+    submit: function () {
+      this.$store.commit('TOGGLE_LOADING')
       this.$store.dispatch('saveItem')
     },
 

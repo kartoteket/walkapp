@@ -69,6 +69,7 @@ export default {
         context.dispatch('getItem', response.data.id)
         context.commit('TOGGLE_HIGHLIGHT_FIRST')
         context.commit('RESET_NEW_ITEM')
+        context.commit('TOGGLE_LOADING')
       })
       .catch((error) => console.log(error))
   }

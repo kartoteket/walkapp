@@ -36,7 +36,8 @@ export default new Vuex.Store({
         zoomLow: 5,
         zoomHigh: 20
       }
-    }
+    },
+    loading: false
   },
 
   getters: {
@@ -99,6 +100,9 @@ export default new Vuex.Store({
     },
     TOGGLE_HIGHLIGHT_FIRST: state => {
       state.Xconfig.highlightfirst = !state.Xconfig.highlightfirst
+    },
+    TOGGLE_LOADING: state => {
+      state.loading = !state.loading
     }
   },
 
