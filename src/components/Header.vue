@@ -1,11 +1,11 @@
 <template>
-  <div class="webapp__header">
-
+  <div class="webapp__header" v-if="walk.id">
 
       <router-link :to="{ name: 'welcome'}" class="webapp-title">
           <img src="../assets/tv-logo-small.png" alt="Trygghetsvandringer">
           {{walk.title}}
       </router-link>
+
       <a href="#" v-on:click.prevent="openMenu = !openMenu" v-bind:class="{ expanded : openMenu }" class="nav-item" >
           <svg class="icon nav-icon nav-icon--open"><use xlink:href="#icon-menu"></use></svg>
           <svg class="icon nav-icon nav-icon--close"><use xlink:href="#icon-close"></use></svg>
@@ -33,6 +33,9 @@
               </nav>
           </div>
       </div>
+  </div>
+  <div class="webapp__header" v-else>
+    <span class="webapp-title">Velkommen</span>
   </div>
 </template>
 

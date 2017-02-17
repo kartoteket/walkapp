@@ -1,5 +1,5 @@
 <template>
-  <div class="webapp__footer">
+  <div class="webapp__footer" v-if="walkId">
       <template v-if="route === 'register'">
           <router-link class="button width-25%" :to="{ name: 'map'}">Tilbake</router-link>
           <button v-on:click="selectLocation" class="button button--primary" v-bind:class="{ 'button--disabled' : readyToSubmit }">{{ submitButtonCaption }}</button>
@@ -19,7 +19,6 @@
           <a v-if="btn.external" :href="btn.target" class="button" :class="btn.class">{{ btn.label }}</a>
           <router-link v-else :to="btn.target" class="button" :class="btn.class">{{ btn.label }}</router-link>
       </template>
-
   </div>
 </template>
 

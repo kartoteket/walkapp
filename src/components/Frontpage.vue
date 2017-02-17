@@ -3,7 +3,7 @@
 
       <header-component></header-component>
 
-      <div role="main" class="webapp__content">
+      <div role="main" class="webapp__content" :class="{ 'center-content' : !walkId }" >
           <div class="gutter-half--top" v-if="walkId">
               <div class="group">
                   <h1>{{ walk.title }}</h1>
@@ -32,9 +32,9 @@
           <div class="gutter-half--top" v-else>
               <div class="group">
                   <h1>Skriv inn vandringens kode</h1>
-                  <form @submit.prevent="submit">
-                    <input v-model="id" type="text">
-                    <button type="submit" class="button">Start!</button>
+                  <form @submit.prevent="submit" class="gutter-half--top">
+                    <input v-model="id" type="text" class="text--center">
+                    <button type="submit" class="button button--primary gutter-half--top">Start!</button>
                   </form>
               </div>
           </div>
