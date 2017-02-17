@@ -7,6 +7,7 @@ export default {
     context.dispatch('getItems')
     context.dispatch('getWalk')
     context.dispatch('getUser')
+    context.dispatch('getTags')
     context.dispatch('getLocation')
   },
 
@@ -31,6 +32,12 @@ export default {
   getItems: (context) => {
     return api.get(context.state.Xconfig.apiUrl + '/walks/' + context.getters.walkId + '/items.json')
       .then((response) => context.commit('SET_ITEMS', response.data))
+      .catch((error) => console.log(error))
+  },
+
+  getTags: (context) => {
+    return api.get(context.state.Xconfig.apiUrl + '/tags.json')
+      .then((response) => context.commit('SET_TAGS', response.data))
       .catch((error) => console.log(error))
   },
 

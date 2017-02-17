@@ -8,6 +8,7 @@ Vue.use(Vuex)
 const defaultItem = {
   message: '',
   image: null,
+  tags: [],
   position: {
     address: '',
     lat: null,
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     user: {},
     walk: {},
     items: [],
+    tags: [],
     newItem: defaultItem,
     currentPosition: {},
     Xconfig: {
@@ -80,11 +82,17 @@ export default new Vuex.Store({
     SET_ITEMS: (state, data) => {
       state.items = data
     },
+    SET_TAGS: (state, data) => {
+      state.tags = data
+    },
     APPEND_ITEMS: (state, data) => {
       state.items.unshift(data) // new on top
     },
     RESET_NEW_ITEM: (state) => {
       state.newItem = defaultItem
+    },
+    SET_ITEM_TAGS: (state, data) => {
+      state.newItem.tags = data
     },
     SET_POSITION: (state, data) => {
       state.newItem.position = data
