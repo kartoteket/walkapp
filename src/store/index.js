@@ -73,6 +73,8 @@ export default new Vuex.Store({
   },
 
   mutations: {
+
+    // Data loaded from API
     SET_USER: (state, data) => {
       state.user = data
     },
@@ -85,12 +87,16 @@ export default new Vuex.Store({
     SET_TAGS: (state, data) => {
       state.tags = data
     },
+
+    // mutate on save
     APPEND_ITEMS: (state, data) => {
-      state.items.unshift(data) // new on top
+      state.items.unshift(data) // new on top, so unshift insted of push
     },
     RESET_NEW_ITEM: (state) => {
       state.newItem = defaultItem
     },
+
+    // Set properties on item
     SET_ITEM_TAGS: (state, data) => {
       state.newItem.tags = data
     },
@@ -103,6 +109,8 @@ export default new Vuex.Store({
     SET_MESSAGE: (state, data) => {
       state.newItem.message = data
     },
+
+    // other states
     SET_CURRENT_POSITION: (state, data) => {
       state.currentPosition = data
     },
