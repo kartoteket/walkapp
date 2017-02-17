@@ -37,6 +37,10 @@ export default {
     if (item.image) {
       form.append('fields[walk_item_photo]', item.image)
     }
+
+    if (item.tags.length) {
+      const tagIds = item.tags.map((tag) => tag.id)
+      form.append('fields[walk_item_tags][]', tagIds) // gets send as string but is transformed to Array backend
     }
 
     return form
