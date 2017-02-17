@@ -29,17 +29,18 @@
                 <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
             </div>
 
-        <!--
             <div class="group">
                 <label>Legg til merkelapp</label>
+                <selector></selector>
+        <!--
                 <button class="button" v-on:click="addTag">Ny...</button>
                 <select v-selectize="selected">
                     <option value="one">Static item 1</option>
                     <option value="two">Static item 2</option>
                     <option value="three">Static item 3</option>
                 </select>
-            </div>
         -->
+            </div>
         </div>
     </div>
 
@@ -54,14 +55,15 @@
 </template>
 
 <script>
-
+import Selector from './Selector'
 import _ from 'lodash'
 import animatedScrollTo from 'animated-scrollto'
-
 import {mapState} from 'vuex'
 
 export default {
   name: 'saveItem',
+
+  components: { Selector },
 
   data: function () {
     return {
@@ -154,9 +156,6 @@ export default {
 
     setImage: function (file) {
       this.$store.commit('SET_IMAGE', file)
-    },
-
-    setTags: function () {
     },
 
     submit: function () {
