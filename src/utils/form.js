@@ -1,6 +1,7 @@
 export default {
   create: (store) => {
     const form = new FormData()
+    const item = store.state.newItem
 
     /**
      * We don't have a very good API setup for authenticating users, so if (currently just a hypothetical)
@@ -20,21 +21,22 @@ export default {
     form.append('fields[walk_item_parent][]', store.getters.walkId)
     form.append('fields[walk_item_priority]', 'high')
 
-    if (store.state.newItem.message) {
-      form.append('fields[walk_item_description]', store.state.newItem.message)
+    if (item.message) {
+      form.append('fields[walk_item_description]', item.message)
     }
 
-    if (store.state.newItem.position.address) {
-      form.append('fields[walk_item_location][line1]', store.state.newItem.position.address)
+    if (item.position.address) {
+      form.append('fields[walk_item_location][line1]', item.position.address)
     }
 
-    if (store.state.newItem.position.lat && store.state.newItem.position.lng) {
-      form.append('fields[walk_item_location][latitude]', store.state.newItem.position.lat)
-      form.append('fields[walk_item_location][longitude]', store.state.newItem.position.lng)
+    if (item.position.lat && item.position.lng) {
+      form.append('fields[walk_item_location][latitude]', item.position.lat)
+      form.append('fields[walk_item_location][longitude]', item.position.lng)
     }
 
-    if (store.state.newItem.image) {
-      form.append('fields[walk_item_photo]', store.state.newItem.image)
+    if (item.image) {
+      form.append('fields[walk_item_photo]', item.image)
+    }
     }
 
     return form
