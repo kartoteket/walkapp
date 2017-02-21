@@ -14,6 +14,7 @@
 /* global google:true */
 import {mapState, mapGetters} from 'vuex'
 import mixins from '../mixins'
+import mapStyle from '../assets/json/silver.json'
 
 export default {
   name: 'MapItems',
@@ -73,7 +74,8 @@ export default {
 
       var mapOptions = {
         center: {lat: 64.467506, lng: 11.495773},
-        zoom: this.Xconfig.mapConfig.zoomLow
+        zoom: this.Xconfig.mapConfig.zoomLow,
+        styles: mapStyle
       }
       var mapElm = document.getElementById('funnmap')
       this.map = new google.maps.Map(mapElm, mapOptions)

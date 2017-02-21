@@ -25,6 +25,7 @@
 /* global google:true */
 import _ from 'lodash'
 import mixins from '../mixins'
+import mapStyle from '../assets/json/silver.json'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -146,7 +147,8 @@ export default {
       var mapElm = document.getElementById('funnmap')
       var mapOptions = {
         center: pos,
-        zoom: this.mapConfig.zoomHigh - 2
+        zoom: this.mapConfig.zoomHigh - 2,
+        styles: mapStyle
       }
 
       // initalise map
