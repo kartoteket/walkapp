@@ -23,11 +23,11 @@
 
                       <li class="nav__sep"></li>
 
-                      <li><a class="nav__item" href="/vandringer/users"> Din profil </a></li>
-                      <li><a class="nav__item" href="/vandringer/vandringer"> Flere vandringer </a></li>
-                      <li><a class="nav__item" href="/vandringer/pages/tryggere-triveligere-og-tilgjengelig">Om Trygghetsvandringer</a></li>
+                      <li><a class="nav__item" :href="rootUrl + '/vandringer/users'"> Din profil </a></li>
+                      <li><a class="nav__item" :href="rootUrl + '/vandringer/vandringer'"> Flere vandringer </a></li>
+                      <li><a class="nav__item" :href="rootUrl + '/vandringer/pages/tryggere-triveligere-og-tilgjengelig'">Om Trygghetsvandringer</a></li>
                       <li> <a :href="logoutUrl" class="nav__item">Avslutt</a> </li>
-                      <li> <a href="/index.php/actions/social/logout?redirect=vandringer" class="nav__item">Logout</a> </li>
+                      <li> <a :href="rootUrl + '/index.php/actions/social/logout?redirect=vandringer'" class="nav__item">Logout</a> </li>
 
                   </ul>
               </nav>
@@ -50,11 +50,16 @@ export default {
   },
 
   computed: {
+
     walk () {
       return this.$store.state.walk
     },
 
-    logoutUrl: function () {
+    rootUrl () {
+      return this.$store.state.Xconfig.rootUrl
+    },
+
+    logoutUrl () {
       return '/vandringer/vandringer/' + this.walk.id
     }
   }

@@ -26,6 +26,7 @@ export default new Vuex.Store({
     currentPosition: {},
     Xconfig: {
       apiUrl: '/api',
+      rootUrl: 'https://risiko.dev',
       itemsSectionId: 8,
       highlightfirst: false,
       geoConfig: {
