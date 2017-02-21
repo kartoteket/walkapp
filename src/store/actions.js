@@ -74,7 +74,7 @@ export default {
     return api.post(context.state.Xconfig.apiUrl, request, config)
       .then((response) => {
         context.dispatch('getItem', response.data.id)
-        context.commit('TOGGLE_HIGHLIGHT_FIRST')
+        context.commit('TOGGLE_HIGHLIGHT_FIRST', true)
         context.commit('RESET_NEW_ITEM')
         context.commit('TOGGLE_LOADING')
       })
