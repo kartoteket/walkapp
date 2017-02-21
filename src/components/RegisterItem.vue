@@ -9,7 +9,7 @@
         <input id="js-pac-input" v-bind:class="{ hidden: selectMode }" class="controls pac-input" type="text" placeholder="Flytt på kartet eller søk etter en adresse">
 
         <div id="js-hiddenmarker" class="selectmarker"  v-bind:class="{ hidden: !editMode }" >
-            <img src="https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png">
+          <img src="../assets/img/hair-cross.svg" alt="">
         </div>
     </div>
 
@@ -162,9 +162,19 @@ export default {
           if (results[0]) {
             that.position = that.getAddress(results[0])
 
+            var icon = {
+              path: 'M10 0.4c-5.303 0-9.601 4.298-9.601 9.6 0 5.303 4.298 9.601 9.601 9.601 5.301 0 9.6-4.298 9.6-9.601s-4.299-9.6-9.6-9.6zM11 17.525v-4.525h-2v4.525c-3.396-0.446-6.080-3.129-6.527-6.525h4.527v-2h-4.527c0.447-3.396 3.131-6.079 6.527-6.525v4.525h2v-4.525c3.394 0.447 6.078 3.13 6.525 6.525h-4.525v2h4.525c-0.447 3.394-3.131 6.078-6.525 6.525z',
+              fillColor: '#bc5731',
+              fillOpacity: 1,
+              anchor: new google.maps.Point(12, 32),
+              strokeWeight: 0,
+              scale: 1.5
+            }
+
             that.marker = new google.maps.Marker({
               position: that.position,
-              map: that.map
+              map: that.map,
+              icon: icon
             })
 
             // center map on marker. Gets paned a little bit after domready.
