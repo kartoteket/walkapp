@@ -39,8 +39,10 @@ export default {
     }
 
     if (item.tags.length) {
-      const tagIds = item.tags.map((tag) => tag.id)
+      const tagIds = item.tags.map(tag => tag.id)
+      const newTags = item.tags.filter(tag => !tag.hasOwnProperty('id'))
       form.append('fields[walk_item_tags][]', tagIds) // gets send as string but is transformed to Array backend
+      form.append('newTags', JSON.stringify(newTags)) // stringify to send
     }
 
     return form
