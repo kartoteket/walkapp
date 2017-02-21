@@ -75,8 +75,10 @@ export default {
 
       staticMarker.style.position = 'absolute'
       // staticMarker.style.display = 'block'
-      staticMarker.style.left = (center.x - (22 / 2)) + 'px'  // subtract half of marker width
-      staticMarker.style.top = (center.y - (40 / 2)) + 'px'   // subtract half of marker height
+      // staticMarker.style.left = (center.x - (20 / 2)) + 'px'  // subtract half of marker width
+      // staticMarker.style.top = (center.y - (22 / 2)) + 'px'   // subtract half of marker height
+      staticMarker.style.left = (center.x - 28) + 'px'  // adjusted by calibration
+      staticMarker.style.top = (center.y + 6) + 'px'   // adjusted by calibration
       this.marker.setMap(null)
 
       this.searchBox = new google.maps.places.SearchBox(input, {bounds: this.map.getBounds()})
@@ -106,6 +108,26 @@ export default {
       var pos = this.map.getCenter().toJSON()
       var geocoder = new google.maps.Geocoder()
       var input = document.getElementById('js-pac-input')
+      var calibrate = false
+
+      // DEBUG MAP CENTER MARKER POSITION. FOR CALIBRATION OF HIDDEN MARKER
+      if (calibrate) {
+        var icon = {
+          path: 'M10 0.4c-5.303 0-9.601 4.298-9.601 9.6 0 5.303 4.298 9.601 9.601 9.601 5.301 0 9.6-4.298 9.6-9.601s-4.299-9.6-9.6-9.6zM11 17.525v-4.525h-2v4.525c-3.396-0.446-6.080-3.129-6.527-6.525h4.527v-2h-4.527c0.447-3.396 3.131-6.079 6.527-6.525v4.525h2v-4.525c3.394 0.447 6.078 3.13 6.525 6.525h-4.525v2h4.525c-0.447 3.394-3.131 6.078-6.525 6.525z',
+          fillColor: '#2ca286',
+          fillOpacity: 1,
+          anchor: new google.maps.Point(12, 32),
+          strokeWeight: 0,
+          scale: 1.75
+        }
+
+        var marker = new google.maps.Marker({
+          position: pos,
+          map: this.map,
+          icon: icon
+        })
+        console.log(marker)
+      }
 
       this.searchBox.setBounds(this.map.getBounds())
 
