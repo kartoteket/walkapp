@@ -67,7 +67,6 @@ export default {
 
   data: function () {
     return {
-      // localMessage: this.message,
       imagePreview: null,
       hasFile: false,
       showLogin: false
@@ -85,19 +84,12 @@ export default {
       loading: state => state.loading
     }),
 
-    // position: function () {
-    //   return this.newItem.position
-    // },
-    // message: function () {
-    //   return this.message
-    // },
-
     draft: function () {
       return !(this.message && this.position) || false
     },
 
     fileInputButtonCaption: function () {
-      return this.previewSrc ? 'Endre bildet…' : 'Legg til et bilde…'
+      return this.previewImage ? 'Endre bildet…' : 'Legg til et bilde…'
     },
 
     submitButtonCaption: function () {
@@ -140,7 +132,7 @@ export default {
       }, interval)
     },
 
-    // Attempting to dealy re-routing until save/load is complete. Nt really perfect yet
+    // Attempting to dealy re-routing until save/load is complete. Not really perfect yet
     loading: function (val, oldVal) {
       if (oldVal) {
         this.$router.push({name: 'map'})
@@ -174,11 +166,8 @@ export default {
       var that = this
       var reader = new FileReader()
 
-      console.log('createPreview is triggered')
-
       reader.addEventListener('load', function () {
         that.imagePreview = reader.result
-        // console.log(that.imagePreview)
       }, false)
 
       if (this.image) {
