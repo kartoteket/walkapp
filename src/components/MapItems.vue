@@ -135,13 +135,25 @@ export default {
       var img = null
       var header
       var footer
+      var content
+      var tags = ''
+      var sep = ''
+
+      if (data.tags.length) {
+        tags = 'Emneord: '
+        for (let tag of data.tags) {
+          tags += sep + tag.name
+          sep = ' | '
+        }
+      }
 
       if (data.image) {
         img = '<img class="infowindow__img" src="' + data.image + '">'
       }
       header = '<div class="infowindow__header"><h1>' + data.title + '</h1></div>'
+      content = '<div class="infowindow__content">' + tags + '</div>'
       footer = '<div class="infowindow__footer">' + data.address + '</div>'
-      return '<div class="infowindow">' + header + (img || '') + footer + '</div>'
+      return '<div class="infowindow">' + header + (img || '') + content + footer + '</div>'
     }
   },
 
