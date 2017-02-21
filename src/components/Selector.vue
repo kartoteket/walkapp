@@ -1,15 +1,15 @@
 <template>
   <div>
     <multiselect
-      :v-model="selectedTags"
+      v-model="selectedTags"
       :options="tags"
       :multiple="true"
       :taggable="true"
       :closeOnSelect="true"
       @tag="addTag"
       @input="updateTags"
-      tag-placeholder="Add this as new tag"
-      placeholder="Type to search or add tag"
+      tag-placeholder="Legg til ny"
+      placeholder="Søk eller legg til ny..."
       label="name"
       track-by="slug">
     </multiselect>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import slug from 'slug'
 import Multiselect from 'vue-multiselect'
 import {mapState} from 'vuex'
 export default {
@@ -26,7 +27,7 @@ export default {
 
   data () {
     return {
-      selectedTags: null
+      selectedTags: []
     }
   },
 
@@ -44,20 +45,16 @@ export default {
     },
 
     addTag (newTag) {
-      console.log('addTag')
       const tag = {
         name: newTag,
-        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+        slug: slug(newTag) // TODO.NB: Watch out for potential issues if not unique (shouldnt happen, but...)
       }
 
       this.tags.push(tag)
-      this.updateTags(tag)
+      this.selectedTags.push(tag)
+      this.$store.commit('SET_ITEM_TAGS', this.selectedTags)
     }
   }
 }
 
 </script>
-
-<style scoped>
-
-</style>
