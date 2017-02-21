@@ -2,7 +2,7 @@
   <div class="webapp__header" v-if="walk.id">
 
       <router-link :to="{ name: 'welcome'}" class="webapp-title">
-          <img src="../assets/tv-logo-small.png" alt="Trygghetsvandringer">
+          <img src="../assets/img/tv-logo-small.png" alt="Trygghetsvandringer">
           {{walk.title}}
       </router-link>
 
