@@ -22,7 +22,7 @@ export default new Vuex.Store({
     walk: {},
     items: [],
     tags: [],
-    newItem: defaultItem,
+    newItem: Object.assign({}, defaultItem),
     currentPosition: {},
     Xconfig: {
       apiUrl: '/api',
@@ -94,7 +94,7 @@ export default new Vuex.Store({
       state.items.unshift(data) // new on top, so unshift insted of push
     },
     RESET_NEW_ITEM: (state) => {
-      state.newItem = defaultItem
+      state.newItem = Object.assign({}, defaultItem)
     },
 
     // Set properties on item
