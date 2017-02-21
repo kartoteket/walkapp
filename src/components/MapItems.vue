@@ -13,6 +13,7 @@
 <script>
 /* global google:true */
 import {mapState, mapGetters} from 'vuex'
+import MarkerClusterer from 'node-js-marker-clusterer'
 import mixins from '../mixins'
 import mapStyle from '../assets/json/silver.json'
 
@@ -81,7 +82,7 @@ export default {
       this.map = new google.maps.Map(mapElm, mapOptions)
 
       if (Array.isArray(items) && items.length) {
-        items.forEach((m, i) => {
+        var markers = items.map(function (m, i) {
           if (m.position.lat && m.position.lng) {
             bounds.extend(m.position)
 
@@ -105,7 +106,16 @@ export default {
               }
             })(marker, i))
           }
+          return marker
         })
+
+        /* eslint-disable no-new */
+        /* var markerCluster = */new MarkerClusterer(that.map, markers,
+          {
+            imagePath: 'http://risiko.dev/img/walks/m', // Go external because local path does not play well with webpack assets managment...
+            maxZoom: 18
+          }
+        )
 
         // fit new bounds
         this.map.fitBounds(bounds)
