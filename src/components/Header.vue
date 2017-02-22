@@ -66,3 +66,8 @@ export default {
 }
 </script>
 
+<style>
+  .webapp-title {
+    text-align: center;
+  }
+</style>
