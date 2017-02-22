@@ -1,45 +1,39 @@
 <template>
-  <div class="saveItem">
+  <div id="saveItem">
     <header-component></header-component>
 
     <div role="main" class="webapp__content">
-      <div class="group" style="text-align: center;">
-          <img v-show="imagePreview" :src="imagePreview" class="img-preview" width="100">
+        <div>
 
-          <input id="fileInput" class="fileinput" :class="{ 'fileinput--small' : imagePreview }" type="file" v-on:change="uploadFile" accept="image/*" capture="camera">
-          <label for="fileInput">
+          <div class="group" style="text-align: center;">
+            <img v-show="imagePreview" :src="imagePreview" class="img-preview" width="100">
+            <input id="fileInput" class="fileinput" :class="{ 'fileinput--small' : imagePreview }" type="file" v-on:change="uploadFile" accept="image/*" capture="camera">
+            <label for="fileInput">
               <figure>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                      <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
-                  </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                    <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
+                </svg>
               </figure>
               <span>{{fileInputButtonCaption}}</span>
-          </label>
+            </label>
+          </div>
 
-      </div>
+          <div class="group form">
+            <label class="item-desc">Beskrivelse</label>
+            <textarea class="form__input" :value="message" @focus="scrollIntoView" @input="setMessage" placeholder="En kort og beskrivende forklaring."></textarea>
+          </div>
 
-      <div class="group">
-          <label class="item-desc">Legg til en beskrivelse</label>
-          <textarea :value="message" @focus="scrollIntoView" @input="setMessage" placeholder="En kort og beskrivende forklaring."></textarea>
-      </div>
+          <div class="group">
+            <label class="item-desc">Merkelapp(er)</label>
+            <selector></selector>
+          </div>
 
-      <div class="group" v-if="position.address">
-          <label class="item-desc">Adresse</label>
-          <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
-      </div>
+          <div class="group" v-if="position.address">
+            <label class="item-desc">Adresse</label>
+            <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
+          </div>
 
-      <div class="group">
-          <label>Legg til merkelapp</label>
-          <selector></selector>
-  <!--
-          <button class="button" v-on:click="addTag">Ny...</button>
-          <select v-selectize="selected">
-              <option value="one">Static item 1</option>
-              <option value="two">Static item 2</option>
-              <option value="three">Static item 3</option>
-          </select>
-  -->
-      </div>
+        </div>
     </div>
 
     <footer-component
@@ -87,7 +81,8 @@ export default {
     },
 
     fileInputButtonCaption: function () {
-      return this.previewImage ? 'Endre bildet…' : 'Legg til et bilde…'
+      console.log(this.previewImage)
+      return this.imagePreview ? 'Endre bildet…' : 'Legg til et bilde…'
     },
 
     submitButtonCaption: function () {
@@ -206,3 +201,114 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  // ref: https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+  $higlight-color: #81766a; //$accent-color; //#d3394c;
+  $accent-color:         #bc5731;
+  $accent-color-dark:    darken($accent-color, 20%);
+
+  .fileinput {
+
+      position: absolute;
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      z-index: -1;
+
+      & + label {
+          max-width: 80%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-weight: 700;
+          color: $higlight-color;
+          cursor: pointer;
+          display: inline-block;
+          overflow: hidden;
+          padding: 0.625rem 1.25rem;
+
+          figure {
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+              background-color: $higlight-color;
+              display: block;
+              padding: 20px;
+              margin: 0 auto 10px;
+          }
+
+          svg {
+              width: 100%;
+              height: 100%;
+              vertical-align: middle;
+              fill: currentColor;
+              margin-top: -0.25em;
+              margin-right: 0.25em;
+              fill: #f1e5e6;
+          }
+
+          &:hover {
+              color: $accent-color-dark;
+              figure {
+                  background-color: $accent-color-dark;
+              }
+          }
+
+          * {
+              pointer-events: none;
+          }
+      }
+
+      &:focus + label {
+          outline: 1px dotted #000;
+          outline: -webkit-focus-ring-color auto 5px;
+      }
+
+      // small when a file is selected
+      &--small + label {
+          figure {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-color: $higlight-color;
+              display: inline-block;
+              padding: 10px;
+              margin: 10px;
+
+          }
+      }
+
+  }
+
+  .img-preview {
+      display: block;
+      width: 100%;
+      max-width: 450px;
+      max-height: 300px;
+      margin: 0 auto;
+      border: 5px solid $higlight-color;
+  }
+
+  .item-desc {
+      font-weight: 700;
+      color: $higlight-color;
+  }
+
+  .webapp__content {
+
+    .form__input,
+    .multiselect__tags {
+      border-radius: 3px;
+      border-color: #81766a
+    }
+
+    .multiselect__tag,
+    .multiselect__option--highlight:after,
+    .multiselect__option--highlight {
+      background-color: lighter(#009688, 10%);
+    }
+
+}
+
+</style>
