@@ -3,45 +3,43 @@
     <header-component></header-component>
 
     <div role="main" class="webapp__content">
-        <div>
-            <div class="group" style="text-align: center;">
-                <img v-show="imagePreview" :src="imagePreview" class="img-preview" width="100">
+      <div class="group" style="text-align: center;">
+          <img v-show="imagePreview" :src="imagePreview" class="img-preview" width="100">
 
-                <input id="fileInput" class="fileinput" :class="{ 'fileinput--small' : imagePreview }" type="file" v-on:change="uploadFile" accept="image/*" capture="camera">
-                <label for="fileInput">
-                    <figure>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                            <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
-                        </svg>
-                    </figure>
-                    <span>{{fileInputButtonCaption}}</span>
-                </label>
+          <input id="fileInput" class="fileinput" :class="{ 'fileinput--small' : imagePreview }" type="file" v-on:change="uploadFile" accept="image/*" capture="camera">
+          <label for="fileInput">
+              <figure>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                      <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
+                  </svg>
+              </figure>
+              <span>{{fileInputButtonCaption}}</span>
+          </label>
 
-            </div>
+      </div>
 
-            <div class="group">
-                <label class="item-desc">Legg til en beskrivelse</label>
-                <textarea :value="message" @focus="scrollIntoView" @input="setMessage" placeholder="En kort og beskrivende forklaring."></textarea>
-            </div>
+      <div class="group">
+          <label class="item-desc">Legg til en beskrivelse</label>
+          <textarea :value="message" @focus="scrollIntoView" @input="setMessage" placeholder="En kort og beskrivende forklaring."></textarea>
+      </div>
 
-            <div class="group" v-if="position.address">
-                <label class="item-desc">Adresse</label>
-                <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
-            </div>
+      <div class="group" v-if="position.address">
+          <label class="item-desc">Adresse</label>
+          <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
+      </div>
 
-            <div class="group">
-                <label>Legg til merkelapp</label>
-                <selector></selector>
-        <!--
-                <button class="button" v-on:click="addTag">Ny...</button>
-                <select v-selectize="selected">
-                    <option value="one">Static item 1</option>
-                    <option value="two">Static item 2</option>
-                    <option value="three">Static item 3</option>
-                </select>
-        -->
-            </div>
-        </div>
+      <div class="group">
+          <label>Legg til merkelapp</label>
+          <selector></selector>
+  <!--
+          <button class="button" v-on:click="addTag">Ny...</button>
+          <select v-selectize="selected">
+              <option value="one">Static item 1</option>
+              <option value="two">Static item 2</option>
+              <option value="three">Static item 3</option>
+          </select>
+  -->
+      </div>
     </div>
 
     <footer-component
@@ -112,7 +110,7 @@ export default {
     },
 
     activeSession: function () {
-      return true // fake it
+      return true // fake it while in dev
       // return this.user && this.user.isCurrent
     }
   },
