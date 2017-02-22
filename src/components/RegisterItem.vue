@@ -24,14 +24,11 @@
 <script>
 /* global google:true */
 import _ from 'lodash'
-import mixins from '../mixins'
 import mapStyle from '../assets/json/silver.json'
 import {mapGetters} from 'vuex'
 
 export default {
   name: 'register',
-
-  mixins: [mixins],
 
   data: function () {
     return {
@@ -88,7 +85,7 @@ export default {
         var places = that.searchBox.getPlaces()
         if (places.length) {
           // that.position = that.getAddress(position[0]) The panTo re-centers the map  whch triggers updateDragPosition()
-          that.panTo(that.getAddress(places[0]))
+          that.map.panTo(that.getAddress(places[0]))
         }
       })
       google.maps.event.addListener(this.map, 'center_changed', _.bind(this.updateDragPosition, this))
@@ -172,6 +169,14 @@ export default {
         zoom: this.mapConfig.zoomHigh - 2,
         styles: mapStyle
       }
+      var icon = {
+        path: 'M10 0.4c-5.303 0-9.601 4.298-9.601 9.6 0 5.303 4.298 9.601 9.601 9.601 5.301 0 9.6-4.298 9.6-9.601s-4.299-9.6-9.6-9.6zM11 17.525v-4.525h-2v4.525c-3.396-0.446-6.080-3.129-6.527-6.525h4.527v-2h-4.527c0.447-3.396 3.131-6.079 6.527-6.525v4.525h2v-4.525c3.394 0.447 6.078 3.13 6.525 6.525h-4.525v2h4.525c-0.447 3.394-3.131 6.078-6.525 6.525z',
+        fillColor: '#bc5731',
+        fillOpacity: 1,
+        anchor: new google.maps.Point(12, 32),
+        strokeWeight: 0,
+        scale: 1.5
+      }
 
       // initalise map
       this.map = new google.maps.Map(mapElm, mapOptions)
@@ -186,15 +191,6 @@ export default {
           if (results[0]) {
             that.position = that.getAddress(results[0])
 
-            var icon = {
-              path: 'M10 0.4c-5.303 0-9.601 4.298-9.601 9.6 0 5.303 4.298 9.601 9.601 9.601 5.301 0 9.6-4.298 9.6-9.601s-4.299-9.6-9.6-9.6zM11 17.525v-4.525h-2v4.525c-3.396-0.446-6.080-3.129-6.527-6.525h4.527v-2h-4.527c0.447-3.396 3.131-6.079 6.527-6.525v4.525h2v-4.525c3.394 0.447 6.078 3.13 6.525 6.525h-4.525v2h4.525c-0.447 3.394-3.131 6.078-6.525 6.525z',
-              fillColor: '#bc5731',
-              fillOpacity: 1,
-              anchor: new google.maps.Point(12, 32),
-              strokeWeight: 0,
-              scale: 1.5
-            }
-
             that.marker = new google.maps.Marker({
               position: that.position,
               map: that.map,
@@ -202,7 +198,8 @@ export default {
             })
 
             // center map on marker. Gets paned a little bit after domready.
-            that.zoomAndCenter(that.marker.getPosition(), that.mapConfig.zoomHigh)
+            that.map.setCenter(that.position)
+            that.map.setZoom(that.mapConfig.zoomHigh)
 
             infoWindow.setContent(that.getInfoWindow())
             infoWindow.open(that.map, that.marker)

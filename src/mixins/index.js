@@ -4,13 +4,13 @@
 
 export default {
 
-  data: function () {
-    return {
-      scope: null,
-      apiUrl: 'https://risiko.dev/api'
-    }
-  },
-
+  // data: function () {
+  //   return {
+  //     scope: null,
+  //     apiUrl: 'https://risiko.dev/api'
+  //   }
+  // },
+//
   methods: {
 
     // getItems: function (refresh) {

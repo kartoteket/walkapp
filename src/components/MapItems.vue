@@ -123,9 +123,9 @@ export default {
       // zoom map to currentPosition if no markers
       } else {
         if (this.currentCoords) {
-          this.zoomAndCenter(that.currentCoords)
+          this.map.setCenter(that.currentCoords)
         } else {
-          this.$watch('currentCoords', that.zoomAndCenter)
+          this.$watch('currentCoords', this.map.setCenter(that.currentCoords))
         }
       }
     },
