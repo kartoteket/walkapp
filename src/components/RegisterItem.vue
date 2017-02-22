@@ -4,7 +4,7 @@
     <header-component></header-component>
 
     <div role="main" class="webapp__content">
-        <div id="funnmap" class="appmap" v-bind:class="{ 'appmap--short': editMode }"></div>
+        <div id="funnmap" class="appmap appmap--short"></div>
 
         <input id="js-pac-input" v-bind:class="{ hidden: selectMode }" class="controls pac-input" type="text" placeholder="Flytt på kartet eller søk etter en adresse">
 
