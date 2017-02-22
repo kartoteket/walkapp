@@ -9,6 +9,12 @@
 export default {
   name: 'app',
 
+  data: function () {
+    return {
+      walkId: this.$route.params.walk_id
+    }
+  },
+
   // initApp
   created: function () {
     if (this.walkId) {
