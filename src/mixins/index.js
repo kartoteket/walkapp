@@ -150,16 +150,16 @@ export default {
      * @param  {[type]} zoom [description]
      * @return {[type]}      [description]
      */
-    zoomAndCenter: function (pos, zoom) {
-      zoom = zoom || 10
-      pos = pos.latitude ? {lat: pos.latitude, lng: pos.longitude} : pos
-      this.map.setZoom(zoom)
-      this.map.setCenter(pos)
-    },
+    // zoomAndCenter: function (pos, zoom) {
+    //   zoom = zoom || 10
+    //   pos = pos.latitude ? {lat: pos.latitude, lng: pos.longitude} : pos
+    //   this.map.setZoom(zoom)
+    //   this.map.setCenter(pos)
+    // },
 
-    panTo: function (pos) {
-      pos = pos.latitude ? {lat: pos.latitude, lng: pos.longitude} : pos
-      this.map.panTo(pos)
-    }
+    // panTo: function (pos) {
+    //   pos = pos.latitude ? {lat: pos.latitude, lng: pos.longitude} : pos
+    //   this.map.panTo(pos)
+    // }
   }
 }
