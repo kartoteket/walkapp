@@ -115,8 +115,8 @@ export default new Vuex.Store({
     SET_CURRENT_POSITION: (state, data) => {
       state.currentPosition = data
     },
-    TOGGLE_HIGHLIGHT_FIRST: state => {
-      state.Xconfig.highlightfirst = !state.Xconfig.highlightfirst
+    TOGGLE_HIGHLIGHT_FIRST: (state, force) => {
+      state.Xconfig.highlightfirst = !!force || !state.Xconfig.highlightfirst
     },
     TOGGLE_LOADING: state => {
       state.loading = !state.loading
