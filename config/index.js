@@ -40,6 +40,11 @@ module.exports = {
         target: 'http://risiko.dev',
         changeOrigin: true,
       },
+      '/css': {
+        target: 'http://risiko.dev',
+        changeOrigin: true,
+      },
+
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
