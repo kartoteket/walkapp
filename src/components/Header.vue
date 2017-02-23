@@ -60,7 +60,7 @@ export default {
     },
 
     logoutUrl () {
-      return '/vandringer/vandringer/' + this.walk.id
+      return this.rootUrl + '/vandringer/vandringer/' + this.walk.id
     }
   }
 }
