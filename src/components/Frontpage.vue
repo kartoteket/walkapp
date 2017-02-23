@@ -30,7 +30,7 @@
               </div>
           </div>
           <div class="gutter-half--top" v-else>
-              <div class="group">
+              <div class="group form">
                   <h1>Skriv inn vandringens kode</h1>
                   <form @submit.prevent="submit" class="gutter-half--top">
                     <input v-model="id" type="text" class="text--center">
