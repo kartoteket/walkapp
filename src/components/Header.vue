@@ -69,4 +69,7 @@ export default {
   .webapp-title {
     text-align: center;
   }
+  .mobile-menu-overlay {
+    background-color: #e77f25;
+  }
 </style>
