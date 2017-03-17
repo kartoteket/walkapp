@@ -70,7 +70,7 @@ export default {
         'frontpage': [
           {
             target: {name: 'map'},
-            label: 'Vis funn'
+            label: 'Vis funn i kart'
           },
           {
             target: {name: 'register'},

@@ -7,7 +7,7 @@
           <div class="gutter-half--top" v-if="walkId">
               <div class="group">
                   <h1>{{ walk.title }}</h1>
-                  <h2>{{ prettyDate }}</h2>
+                  <p class="fp-description">{{ walk.description }}</p>
               </div>
 
               <div class="group row" v-show="itemsCount > 1">
@@ -24,9 +24,6 @@
                           <label class="dashboard__label">Deltakere</label>
                       </div>
                   </div>
-              </div>
-              <div class="group">
-                  <p class="fp-description">{{ walk.description }}</p>
               </div>
           </div>
           <div class="gutter-half--top" v-else>
