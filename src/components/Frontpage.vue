@@ -5,6 +5,12 @@
 
       <div role="main" class="webapp__content" :class="{ 'center-content' : !walkId }" >
           <div class="gutter-half--top" v-if="walkId">
+<!--
+             <div class="group">
+                  <label>Hei</label>
+                  <h3>{{user.name}}</h3>
+              </div>
+-->
               <div class="group">
                   <h1>{{ walk.title }}</h1>
                   <p class="fp-description">{{ walk.description }}</p>
@@ -58,6 +64,7 @@ export default {
       return this.$store.getters.walkId
     },
     ...mapState([
+      'user',
       'walk'
     ]),
     ...mapGetters([

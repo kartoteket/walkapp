@@ -54,19 +54,19 @@ export default {
 
     buttons: function () {
       var buttons = {
-        'welcome': [
-          {
-            target: this.logoutUrl,
-            label: 'Avslutt',
-            class: 'width-25%',
-            external: true
-          },
-          {
-            target: {name: 'frontpage', param: {walk_id: this.walkId}},
-            label: 'Start!',
-            class: 'button--primary button--wide'
-          }
-        ],
+        // 'welcome': [
+        //   {
+        //     target: this.logoutUrl,
+        //     label: 'Avslutt',
+        //     class: 'width-25%',
+        //     external: true
+        //   },
+        //   {
+        //     target: {name: 'frontpage', param: {walk_id: this.walkId}},
+        //     label: 'Start!',
+        //     class: 'button--primary button--wide'
+        //   }
+        // ],
         'frontpage': [
           {
             target: {name: 'map'},

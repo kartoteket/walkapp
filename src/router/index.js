@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 import Frontpage from 'components/Frontpage'
-import Welcome from 'components/Welcome'
+// import Welcome from 'components/Welcome'
 import mapItems from 'components/MapItems'
 import RegisterItem from 'components/RegisterItem'
 import saveItem from 'components/SaveItem'
@@ -15,7 +15,7 @@ var router = new Router({
   routes: [
     { path: '/',                   name: 'splash', component: Frontpage,     props: true },
     { path: '/:walk_id',           name: 'frontpage', component: Frontpage,     props: true },
-    { path: '/:walk_id/velkommen', name: 'welcome',   component: Welcome,       props: true },
+    // { path: '/:walk_id/velkommen', name: 'welcome',   component: Welcome,       props: true },
     { path: '/:walk_id/kart',      name: 'map',       component: mapItems,      props: true },
     { path: '/:walk_id/registrer', name: 'register',  component: RegisterItem,  props: true },
     { path: '/:walk_id/lagre',     name: 'save',      component: saveItem,      props: true },

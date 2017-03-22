@@ -1,7 +1,7 @@
 <template>
   <div class="webapp__header" v-if="walk.id">
 
-      <router-link :to="{ name: 'welcome'}" class="webapp-title">
+      <router-link :to="{ name: 'frontpage'}" class="webapp-title">
           <img src="../assets/img/tv-logo-small.png" alt="Trygghetsvandringer">
           {{walk.title}}
       </router-link>
@@ -17,7 +17,7 @@
               <nav class="main-nav">
                   <ul class="nav">
 
-                      <li v-on:click="openMenu = false"><router-link :to="{ name: 'welcome'}" class="nav__item">Startside</router-link></li>
+                      <li v-on:click="openMenu = false"><router-link :to="{ name: 'frontpage'}" class="nav__item">Startside</router-link></li>
                       <li v-on:click="openMenu = false"><router-link :to="{ name: 'map'}" class="nav__item">Vis funn i kart</router-link></li>
                       <li v-on:click="openMenu = false"><router-link :to="{ name: 'register'}" class="nav__item">Registrer nytt funn</router-link></li>
                       <li> <a :href="logoutUrl" class="nav__item">Avslutt registrering</a> </li>
