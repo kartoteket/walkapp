@@ -52,7 +52,7 @@ export default {
       return !this.currentCoords || false
     },
     submitButtonCaption: function () {
-      return this.currentCoords ? 'Videre' : 'Venter på posisjon…'
+      return this.currentCoords ? 'Videre' : 'Venter…' // 'Venter på posisjon…'
     }
   },
 

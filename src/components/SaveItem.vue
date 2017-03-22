@@ -101,7 +101,7 @@ export default {
       if (this.message) {
         return 'Send inn!'
       }
-      return 'Venter på beskrivelse…'
+      return 'Venter…'  // 'Venter på beskrivelse…'
     },
 
     activeSession: function () {
