@@ -95,3 +95,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  .webapp__footer {
+      position: fixed;
+      bottom: 0;
+  }
+</style>
