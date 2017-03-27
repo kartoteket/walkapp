@@ -19,7 +19,6 @@
 /* global google:true */
 import {mapState, mapGetters} from 'vuex'
 import MarkerClusterer from 'node-js-marker-clusterer'
-import mixins from '../mixins'
 import mapStyle from '../assets/json/silver.json'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
@@ -29,8 +28,6 @@ export default {
   components: {
     ClipLoader
   },
-
-  mixins: [mixins],
 
   data () {
     return {
@@ -94,7 +91,7 @@ export default {
       this.map = new google.maps.Map(mapElm, mapOptions)
 
       this.map.addListener('tilesloaded', function () {
-        that.isLoading = true // testing
+        that.isLoading = false
       })
 
       if (Array.isArray(items) && items.length) {
