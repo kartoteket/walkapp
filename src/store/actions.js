@@ -79,5 +79,17 @@ export default {
         context.commit('TOGGLE_LOADING')
       })
       .catch((error) => console.log(error))
+  error: function (context, error) {
+    if (error.response.status === 404) {
+      console.log('Vi fant ikke walken')
+    } else if (error.response.status === 500) {
+      console.log('Au, faen vi fikk en 500')
+    } else {
+      console.log(error.response)
+    }
+    debugger
+    context.commit('TOGGLE_LOADING', false)
+    debugger
   }
+
 }

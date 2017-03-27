@@ -12,14 +12,6 @@ export default {
     return axios.post(url, request, config)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
-  },
-
-  error: function (error) {
-    if (error.response.status === 404) {
-      console.log('Vi fant ikke walken')
-    } else {
-      console.log(error.response)
-    }
   }
 
 }
