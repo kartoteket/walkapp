@@ -30,4 +30,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;*/
 }
+
+.is-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  vertical-align: bottom;
+  text-align: center;
+  z-index: 999;
+
+  background-color: rgba(255,255,255,.5);
+  outline: 1px solid red;
+}
 </style>

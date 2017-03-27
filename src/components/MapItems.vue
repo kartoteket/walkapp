@@ -4,6 +4,11 @@
 
     <div role="main" class="webapp__content">
         <div id="funnmap" class="appmap appmap--short"></div>
+
+        <div  v-if="isLoading" class="is-loading">
+          <clip-loader :loading="isLoading" :size="spinnerSize"></clip-loader>
+        </div>
+
     </div>
 
     <footer-component></footer-component>
@@ -16,15 +21,22 @@ import {mapState, mapGetters} from 'vuex'
 import MarkerClusterer from 'node-js-marker-clusterer'
 import mixins from '../mixins'
 import mapStyle from '../assets/json/silver.json'
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 export default {
   name: 'MapItems',
+
+  components: {
+    ClipLoader
+  },
 
   mixins: [mixins],
 
   data () {
     return {
-      map: {}
+      map: {},
+      isLoading: true,
+      spinnerSize: '100px'
     }
   },
 
@@ -80,6 +92,10 @@ export default {
       }
       var mapElm = document.getElementById('funnmap')
       this.map = new google.maps.Map(mapElm, mapOptions)
+
+      this.map.addListener('tilesloaded', function () {
+        that.isLoading = true // testing
+      })
 
       if (Array.isArray(items) && items.length) {
         var markers = items.map(function (m, i) {
