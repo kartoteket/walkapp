@@ -3,45 +3,65 @@
 
       <header-component></header-component>
 
-      <div role="main" class="webapp__content" :class="{ 'center-content' : !walkId }" >
-          <div class="gutter-half--top" v-if="walkId">
-<!--
-             <div class="group">
-                  <label>Hei</label>
-                  <h3>{{user.name}}</h3>
-              </div>
--->
-              <div class="group">
-                  <h1>{{ walk.title }}</h1>
-                  <p class="fp-description">{{ walk.description }}</p>
-              </div>
+      <template v-if="walk" >
 
-              <div class="group row" v-show="itemsCount > 1">
-                  <div class="col">
-                      <router-link class="dashboard__item dashboard__item--accent" :to="{ name: 'map'}">
-                          <span class="dashboard__count">{{ itemsCount }}</span>
-                          <label class="dashboard__label">Funn</label>
-                      </router-link>
-                  </div>
-
-                  <div class="col">
-                      <div class="dashboard__item">
-                          <span class="dashboard__count">{{walk.participantsCount}}</span>
-                          <label class="dashboard__label">Deltakere</label>
-                      </div>
-                  </div>
-              </div>
+        <div role="main" class="webapp__content center-content" v-if="itemsCount < 1">
+          <div>
+            <label>Hei</label>
+            <h2>{{user.name}}</h2>
+            <p>&nbsp;</p>
+            <label>Velkommen til vandringen</label>
+            <h1>{{walk.title}}</h1>
+            <br>
           </div>
-          <div class="gutter-half--top" v-else>
-              <div class="group form">
-                  <h1>Skriv inn vandringens kode</h1>
-                  <form @submit.prevent="submit" class="gutter-half--top">
-                    <input v-model="id" type="text" class="text--center">
-                    <button type="submit" class="button button--primary gutter-half--top">Start!</button>
-                  </form>
+        </div>
+
+        <div role="main" class="webapp__content" v-else >
+          <div class="gutter-half--top">
+
+            <div class="group">
+              <h1>{{ walk.title }}</h1>
+              <p class="fp-description">{{ walk.description }}</p>
+            </div>
+
+            <div class="group row">
+              <div class="col">
+                <router-link class="dashboard__item dashboard__item--accent" :to="{ name: 'map'}">
+                  <span class="dashboard__count">{{ itemsCount }}</span>
+                  <label class="dashboard__label">Funn</label>
+                </router-link>
               </div>
+
+              <div class="col">
+                <div class="dashboard__item">
+                  <span class="dashboard__count">{{walk.participantsCount}}</span>
+                  <label class="dashboard__label">Deltakere</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <div class="webapp__content center-content" v-else>
+          <div>
+            <div class="group form">
+                <h1>Skriv inn vandringens kode</h1>
+                <form @submit.prevent="submit" class="gutter-half--top">
+                  <input v-model="id" type="text" class="text--center">
+                  <button type="submit" class="button button--primary gutter-half--top">Start!</button>
+                </form>
+            </div>
+            <div class="group" v-if="notFound">
+              Koden virker ikke. Prøv igjen?
+            </div>
           </div>
       </div>
+
+      <div  v-if="isLoading" class="is-loading">
+        <clip-loader :loading="isLoading" :size="spinnerSize"></clip-loader>
+      </div>
+
 
       <footer-component></footer-component>
   </div>
@@ -50,12 +70,20 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+
 export default {
   name: 'frontpage',
 
+  components: {
+    ClipLoader
+  },
+
   data: () => {
     return {
-      id: null
+      id: this.walkId,
+      isLoading: false,
+      spinnerSize: '100px'
     }
   },
 
@@ -70,7 +98,19 @@ export default {
     ...mapGetters([
       'itemsCount',
       'prettyDate'
-    ])
+    ]),
+    notFound: function () {
+      return this.walkId && !this.walk
+    }
+  },
+
+  watch: {
+    walk: function (val, oldVal) {
+      if (val.id) {
+        console.log(val.id)
+        this.isLoading = false
+      }
+    }
   },
   methods: {
     submit: function () {
