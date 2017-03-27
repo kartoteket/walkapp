@@ -4,9 +4,9 @@ import form from '../utils/form.js'
 // NB, maybe better to pass in the url when we map the Action to my component, so we can handle any dynamic urls.
 export default {
   initApp: (context) => {
-    context.dispatch('getItems')
-    context.dispatch('getWalk')
     context.dispatch('getUser')
+    context.dispatch('getWalk')
+    context.dispatch('getItems')
     context.dispatch('getTags')
     context.dispatch('getLocation')
   },
