@@ -14,7 +14,7 @@ export default {
   getWalk: (context) => {
     return api.get(context.state.Xconfig.apiUrl + '/walks/' + context.getters.walkId + '.json')
       .then((response) => context.commit('SET_WALK', response))
-      .catch((error) => console.log(error))
+      .catch(error => api.error(error))
   },
 
   getUser: (context) => {
