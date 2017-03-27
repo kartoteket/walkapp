@@ -116,10 +116,10 @@ export default new Vuex.Store({
       state.currentPosition = data
     },
     TOGGLE_HIGHLIGHT_FIRST: (state, force) => {
-      state.config.highlightfirst = !!force || !state.config.highlightfirst
+      state.config.highlightfirst = (force === false || force === true) ? !!force : !state.config.highlightfirst
     },
-    TOGGLE_LOADING: state => {
-      state.loading = !state.loading
+    TOGGLE_LOADING: (state, force) => {
+      state.loading = (force === false || force === true) ? !!force : !state.loading
     }
   },
 
