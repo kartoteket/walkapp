@@ -1,5 +1,5 @@
 <template>
-  <div class="webapp__header" v-if="walk.id">
+  <div class="webapp__header" v-if="walk">
 
       <router-link :to="{ name: 'frontpage'}" class="webapp-title">
           <img src="../assets/img/tv-logo-small.png" alt="Trygghetsvandringer">
@@ -59,7 +59,9 @@ export default {
     },
 
     logoutUrl () {
-      return this.rootUrl + '/vandringer/vandringer/' + this.walk.id
+      if (this.walk) {
+        return this.rootUrl + '/vandringer/vandringer/' + this.walk.id
+      }
     }
   }
 }

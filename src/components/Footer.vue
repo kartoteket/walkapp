@@ -1,5 +1,5 @@
 <template>
-  <div class="webapp__footer" v-if="walkId">
+  <div class="webapp__footer" v-if="walk">
       <template v-if="route === 'register'">
           <router-link class="button width-25%" :to="{ name: 'map'}">Tilbake</router-link>
           <button v-on:click="selectLocation" class="button button--primary" v-bind:class="{ 'button--disabled' : readyToSubmit }">{{ submitButtonCaption }}</button>
@@ -40,6 +40,10 @@ export default {
   //
   computed: {
 
+    walk () {
+      return this.$store.state.walk
+    },
+
     walkId: function () {
       return this.$store.getters.walkId
     },
@@ -48,9 +52,9 @@ export default {
       return this.$route.name
     },
 
-    logoutUrl: function () {
-      return '/vandringer/vandringer/' + this.walkId
-    },
+    // logoutUrl: function () {
+    //   return '/vandringer/vandringer/' + this.walkId
+    // },
 
     buttons: function () {
       var buttons = {

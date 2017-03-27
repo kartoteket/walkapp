@@ -19,7 +19,7 @@ const defaultItem = {
 export default new Vuex.Store({
   state: {
     user: {},
-    walk: {},
+    walk: null,
     items: [],
     tags: [],
     newItem: Object.assign({}, defaultItem),
@@ -57,7 +57,7 @@ export default new Vuex.Store({
     },
 
     prettyDate: state => {
-      if (state.walk.date) {
+      if (state.walk && state.walk.date) {
         return moment(state.walk.date.date).format('DD.MM.YYYY hh:mm')
       }
       return ''
