@@ -55,7 +55,7 @@ export default {
     },
 
     rootUrl () {
-      return this.$store.state.Xconfig.rootUrl
+      return this.$store.state.config.rootUrl
     },
 
     logoutUrl () {

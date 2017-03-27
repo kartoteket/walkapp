@@ -40,7 +40,7 @@ export default {
   computed: {
     ...mapState([
       'items',
-      'Xconfig'
+      'config'
     ]),
     ...mapGetters([
       'currentCoords'
@@ -84,7 +84,7 @@ export default {
 
       var mapOptions = {
         center: {lat: 64.467506, lng: 11.495773},
-        zoom: this.Xconfig.mapConfig.zoomLow,
+        zoom: this.config.mapConfig.zoomLow,
         styles: mapStyle
       }
       var mapElm = document.getElementById('funnmap')
@@ -108,7 +108,7 @@ export default {
             })
 
             // last (items are looped in reversed order)
-            if (that.Xconfig.highlightfirst && i === 0) {
+            if (that.config.highlightfirst && i === 0) {
               marker.setAnimation(google.maps.Animation.BOUNCE)
             }
 

@@ -12,37 +12,37 @@ export default {
   },
 
   getWalk: (context) => {
-    return api.get(context.state.Xconfig.apiUrl + '/walks/' + context.getters.walkId + '.json')
+    return api.get(context.state.config.apiUrl + '/walks/' + context.getters.walkId + '.json')
       .then((response) => context.commit('SET_WALK', response))
       .catch(error => api.error(error))
   },
 
   getUser: (context) => {
-    return api.get(context.state.Xconfig.apiUrl + '/user/me.json')
+    return api.get(context.state.config.apiUrl + '/user/me.json')
       .then((response) => context.commit('SET_USER', response))
       .catch((error) => console.log(error))
   },
 
   getItem: (context, id) => {
-    return api.get(context.state.Xconfig.apiUrl + '/walks/items/' + id + '.json')
+    return api.get(context.state.config.apiUrl + '/walks/items/' + id + '.json')
       .then((response) => context.commit('APPEND_ITEMS', response))
       .catch((error) => console.log(error))
   },
 
   getItems: (context) => {
-    return api.get(context.state.Xconfig.apiUrl + '/walks/' + context.getters.walkId + '/items.json')
+    return api.get(context.state.config.apiUrl + '/walks/' + context.getters.walkId + '/items.json')
       .then((response) => context.commit('SET_ITEMS', response.data))
       .catch((error) => console.log(error))
   },
 
   getTags: (context) => {
-    return api.get(context.state.Xconfig.apiUrl + '/tags.json')
+    return api.get(context.state.config.apiUrl + '/tags.json')
       .then((response) => context.commit('SET_TAGS', response.data))
       .catch((error) => console.log(error))
   },
 
   getLocation: (context) => {
-    var geoOptions = context.state.Xconfig.geoConfig
+    var geoOptions = context.state.config.geoConfig
 
     var geoError = function (error) {
       // error.code can be: 0: unknown error, 1: permission denied, 2: position unavailable (error response from location provider), 3: timed out
@@ -59,7 +59,7 @@ export default {
 
   saveItem: (context) => {
     const request = form.create(context)
-    const config = {
+    const conf = {
       headers: {'X-Requested-With': 'XMLHttpRequest'}
     }
 
@@ -71,7 +71,7 @@ export default {
     // console.log(formdata)
     // <- end debug
 
-    return api.post(context.state.Xconfig.apiUrl, request, config)
+    return api.post(context.state.config.apiUrl, request, conf)
       .then((response) => {
         context.dispatch('getItem', response.data.id)
         context.commit('TOGGLE_HIGHLIGHT_FIRST', true)

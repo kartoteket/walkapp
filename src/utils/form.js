@@ -17,7 +17,7 @@ export default {
     // form.append('redirect', 'api/walks/items/{id}.json') // Craft autoinjects the entryID.. nice, he ?
     form.append('locale', 'no')
     form.append('enabled', '1')
-    form.append('sectionId', store.state.Xconfig.itemsSectionId)
+    form.append('sectionId', store.state.config.itemsSectionId)
     form.append('fields[walk_item_parent][]', store.getters.walkId)
     form.append('fields[walk_item_priority]', 'high')
 

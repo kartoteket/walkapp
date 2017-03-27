@@ -24,7 +24,7 @@ export default new Vuex.Store({
     tags: [],
     newItem: Object.assign({}, defaultItem),
     currentPosition: {},
-    Xconfig: {
+    config: {
       apiUrl: '/api',
       rootUrl: process.env.NODE_ENV === 'development' ? 'https://risiko.dev' : 'https://dev.risikorydding.no',
       itemsSectionId: 8,
@@ -68,7 +68,7 @@ export default new Vuex.Store({
     },
 
     mapConfig: state => {
-      return state.Xconfig.mapConfig
+      return state.config.mapConfig
     }
 
   },
@@ -116,7 +116,7 @@ export default new Vuex.Store({
       state.currentPosition = data
     },
     TOGGLE_HIGHLIGHT_FIRST: (state, force) => {
-      state.Xconfig.highlightfirst = !!force || !state.Xconfig.highlightfirst
+      state.config.highlightfirst = !!force || !state.config.highlightfirst
     },
     TOGGLE_LOADING: state => {
       state.loading = !state.loading
