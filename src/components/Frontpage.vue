@@ -58,8 +58,8 @@
           </div>
       </div>
 
-      <div  v-if="isLoading" class="is-loading">
-        <clip-loader :loading="isLoading" :size="spinnerSize"></clip-loader>
+      <div  v-if="loading" class="is-loading">
+        <clip-loader :loading="loading" :size="spinnerSize"></clip-loader>
       </div>
 
 
@@ -82,7 +82,6 @@ export default {
   data: () => {
     return {
       id: this.walkId,
-      isLoading: false,
       spinnerSize: '100px'
     }
   },
@@ -93,14 +92,15 @@ export default {
     },
     ...mapState([
       'user',
-      'walk'
+      'walk',
+      'loading'
     ]),
     ...mapGetters([
       'itemsCount',
       'prettyDate'
     ]),
     notFound: function () {
-      return this.walkId && !this.walk
+      return !this.loading && this.walkId && !this.walk
     }
   },
 
@@ -108,15 +108,22 @@ export default {
     walk: function (val, oldVal) {
       if (val.id) {
         console.log(val.id)
-        this.isLoading = false
+        this.loading = false
       }
     }
   },
   methods: {
     submit: function () {
+      this.$store.commit('TOGGLE_LOADING', true)
       this.$router.replace({name: 'frontpage', params: { walk_id: this.id }})
       this.$store.dispatch('initApp')
     }
+  },
+
+  created: function () {
+    console.log('created A')
+    this.$store.commit('TOGGLE_LOADING', false, 'xxx')
+    console.log('created B')
   }
 }
 </script>

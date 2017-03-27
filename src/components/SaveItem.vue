@@ -70,14 +70,14 @@ export default {
     ...mapState({
       user: 'user',
       newItem: 'newItem',
+      loading: 'loading',
       message: state => state.newItem.message,
       position: state => state.newItem.position,
-      image: state => state.newItem.image,
-      loading: state => state.loading
+      image: state => state.newItem.image
     }),
 
     draft: function () {
-      return !(this.message && this.position) || false
+      return !(this.message && this.position) || this.loading || false
     },
 
     fileInputButtonCaption: function () {
@@ -97,7 +97,9 @@ export default {
       if (!this.activeSession) {
         return 'Vi sjekker tilgang...'
       }
-
+      if (this.loading) {
+        return 'Lagrer...'
+      }
       if (this.message) {
         return 'Send inn!'
       }
@@ -144,7 +146,6 @@ export default {
     },
 
     submit: function () {
-      this.$store.commit('TOGGLE_LOADING')
       this.$store.dispatch('saveItem')
     },
 
@@ -190,6 +191,8 @@ export default {
   },
 
   created: function () {
+    this.$store.commit('TOGGLE_LOADING', false)
+
     // ping session to make sure we have a user
     // this.checkUser()
   },

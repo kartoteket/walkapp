@@ -24,6 +24,7 @@ export default new Vuex.Store({
     tags: [],
     newItem: Object.assign({}, defaultItem),
     currentPosition: {},
+    loading: false,
     config: {
       apiUrl: '/api',
       rootUrl: process.env.NODE_ENV === 'development' ? 'https://risiko.dev' : 'https://dev.risikorydding.no',
@@ -39,8 +40,7 @@ export default new Vuex.Store({
         zoomLow: 5,
         zoomHigh: 20
       }
-    },
-    loading: false
+    }
   },
 
   getters: {

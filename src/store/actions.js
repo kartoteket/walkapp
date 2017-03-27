@@ -13,8 +13,11 @@ export default {
 
   getWalk: (context) => {
     return api.get(context.state.config.apiUrl + '/walks/' + context.getters.walkId + '.json')
-      .then((response) => context.commit('SET_WALK', response))
-      .catch(error => api.error(error))
+      .then((response) => {
+        context.commit('SET_WALK', response)
+        context.commit('TOGGLE_LOADING', false)
+      })
+      .catch(error => this.error(error))
   },
 
   getUser: (context) => {
@@ -62,7 +65,7 @@ export default {
     const conf = {
       headers: {'X-Requested-With': 'XMLHttpRequest'}
     }
-
+    context.commit('TOGGLE_LOADING', true)
     // debug ->
     // let formdata = {}
     // for (var pair of request.entries()) {
@@ -76,9 +79,11 @@ export default {
         context.dispatch('getItem', response.data.id)
         context.commit('TOGGLE_HIGHLIGHT_FIRST', true)
         context.commit('RESET_NEW_ITEM')
-        context.commit('TOGGLE_LOADING')
+        context.commit('TOGGLE_LOADING', false)
       })
-      .catch((error) => console.log(error))
+      .catch(error => this.error(error))
+  },
+
   error: function (context, error) {
     if (error.response.status === 404) {
       console.log('Vi fant ikke walken')
