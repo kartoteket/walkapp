@@ -82,6 +82,6 @@ export default {
         context.commit('RESET_NEW_ITEM')
         context.commit('TOGGLE_LOADING', false)
       })
-      .catch(error => api.error(error))
+      .catch(error => api.error(context, error))
   }
 }
