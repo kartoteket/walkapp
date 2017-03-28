@@ -10,11 +10,11 @@ export default {
      * posting fom another domain, and thus not being authenticated, we use the guest entries plugin endpoint
      * and set the author in an onSave-hook in the backend
      */
-    form.append('action', 'GuestEntries/saveEntry') // For when not logged inn (on another domain)
-    form.append('authorId', store.getters.userId)
+    // form.append('action', 'GuestEntries/saveEntry') // For when not logged inn (on another domain)
+    // form.append('authorId', store.getters.userId)
 
     /** normal setup, we just post to the saveEntry */
-    // form.append('action', 'entries/saveEntry')
+    form.append('action', 'entries/saveEntry')
 
     // form.append('redirect', 'api/walks/items/{id}.json') // Craft autoinjects the entryID.. nice, he ?
     form.append('locale', 'no')
