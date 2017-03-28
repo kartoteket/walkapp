@@ -121,9 +121,8 @@ export default {
   },
 
   created: function () {
-    console.log('created A')
-    this.$store.commit('TOGGLE_LOADING', false, 'xxx')
-    console.log('created B')
+    this.$store.commit('TOGGLE_LOADING', false)
+  },
   }
 }
 </script>
