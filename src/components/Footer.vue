@@ -34,10 +34,6 @@ export default {
     }
   },
 
-  // created: function () {
-  //   alert('xxx')
-  // },
-  //
   computed: {
 
     walk () {
@@ -100,9 +96,52 @@ export default {
 }
 </script>
 
-<style>
-  .webapp__footer {
-      position: fixed;
-      bottom: 0;
+<style lang="scss">
+$mq-breakpoints: (
+    mobile:  320px,
+    tablet:  740px,
+    desktop: 980px,
+    wide:    1300px,
+
+    // Tweakpoints
+    mobilePlus: 420px
+);
+@import "~sass-mq/mq";
+
+.webapp__footer {
+  display: flex;
+  justify-content: stretch;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 2;
+
+  @include mq($from: tablet) {
+    height: 0;
   }
+
+  > .button {
+    flex: 1 1 100%;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 0;
+
+    @include mq($from: tablet) {
+
+      position: absolute;
+      display: inline-block;
+      height: auto;
+      padding: 1.5rem 3rem;
+      bottom: 60px;
+      box-shadow: 0 4px 3px 0 rgba(0,0,0,0.24), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+      &:nth-child(1) {
+        left: 60px;
+      }
+      &:nth-child(2) {
+        right: 60px;
+      }
+    }
+  }
+}
 </style>
