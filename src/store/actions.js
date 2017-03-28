@@ -3,6 +3,7 @@ import form from '../utils/form.js'
 
 // NB, maybe better to pass in the url when we map the Action to my component, so we can handle any dynamic urls.
 export default {
+
   initApp: (context) => {
     context.dispatch('getUser')
     context.dispatch('getWalk')
@@ -17,7 +18,7 @@ export default {
         context.commit('SET_WALK', response)
         context.commit('TOGGLE_LOADING', false)
       })
-      .catch(error => this.error(error))
+      .catch((error) => api.error(context, error))
   },
 
   getUser: (context) => {
@@ -81,20 +82,6 @@ export default {
         context.commit('RESET_NEW_ITEM')
         context.commit('TOGGLE_LOADING', false)
       })
-      .catch(error => this.error(error))
-  },
-
-  error: function (context, error) {
-    if (error.response.status === 404) {
-      console.log('Vi fant ikke walken')
-    } else if (error.response.status === 500) {
-      console.log('Au, faen vi fikk en 500')
-    } else {
-      console.log(error.response)
-    }
-    debugger
-    context.commit('TOGGLE_LOADING', false)
-    debugger
+      .catch(error => api.error(error))
   }
-
 }
