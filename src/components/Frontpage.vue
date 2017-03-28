@@ -123,6 +123,10 @@ export default {
   created: function () {
     this.$store.commit('TOGGLE_LOADING', false)
   },
+
+  mounted () {
+    // use this to pass any id in the URL as default value to input
+    this.id = this.walkId
   }
 }
 </script>
