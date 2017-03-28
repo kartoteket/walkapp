@@ -28,12 +28,34 @@
             <selector></selector>
           </div>
 
+          <div class="group">
+            <label class="item-desc">Prioritet</label>
+            <div class="slider-wrapper slider">
+              <range-slider
+                class="slider"
+                min="1"
+                max="3"
+                step="1"
+                v-model="priority">
+              </range-slider>
+              <ol class="slider-labels slider">
+                <li v-on:click="priority = 1">Lav</li>
+                <li v-on:click="priority = 2">Middels</li>
+                <li v-on:click="priority = 3">Høy</li>
+              </ol>
+            </div>
+          </div>
+
           <div class="group" v-if="position.address">
             <label class="item-desc">Adresse</label>
             <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
           </div>
 
         </div>
+    </div>
+
+    <div  v-if="loading" class="is-loading">
+      <clip-loader :loading="loading" :size="spinnerSize"></clip-loader>
     </div>
 
     <footer-component
@@ -47,21 +69,29 @@
 </template>
 
 <script>
+import RangeSlider from 'vue-range-slider'
 import Selector from './Selector'
 import _ from 'lodash'
 import animatedScrollTo from 'animated-scrollto'
 import {mapState} from 'vuex'
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 export default {
   name: 'saveItem',
 
-  components: { Selector },
+  components: {
+    Selector,
+    ClipLoader,
+    RangeSlider
+  },
 
   data: function () {
     return {
       imagePreview: null,
       hasFile: false,
-      showLogin: false
+      showLogin: false,
+      spinnerSize: '100px',
+      priority: 2
     }
   },
 
@@ -103,7 +133,7 @@ export default {
       if (this.message) {
         return 'Send inn!'
       }
-      return 'Venter…'  // 'Venter på beskrivelse…'
+      return 'Beskrivelse påkrevd'  // 'Venter på beskrivelse…'
     },
 
     activeSession: function () {
@@ -116,6 +146,10 @@ export default {
 
     image: function (val, oldVal) {
       this.createPreview()
+    },
+
+    priority: function (val) {
+      this.setPriority()
     },
 
     activeSession: function () {
@@ -143,6 +177,10 @@ export default {
 
     setImage: function (file) {
       this.$store.commit('SET_IMAGE', file)
+    },
+
+    setPriority: function () {
+      this.$store.commit('SET_PRIORITY', this.priority)
     },
 
     submit: function () {
@@ -206,10 +244,37 @@ export default {
 </script>
 
 <style lang="scss">
+
   // ref: https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+
   $higlight-color: #81766a; //$accent-color; //#d3394c;
   $accent-color:         #bc5731;
   $accent-color-dark:    darken($accent-color, 20%);
+
+  $slider-width: 200px;
+  $rail-height: 4px;
+  $knob-size: 20px;
+
+  $rail-color: #e2e2e2;
+  $rail-fill-color: #f59e22;
+  $knob-color: $rail-fill-color;
+
+  $knob-border: 1px solid darken($rail-fill-color, 2%);
+  $knob-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+
+
+  $mq-breakpoints: (
+      mobile:  320px,
+      tablet:  740px,
+      desktop: 980px,
+      wide:    1300px,
+
+      // Tweakpoints
+      mobilePlus: 420px
+  );
+  @import "~sass-mq/mq";
+
+  @import "~vue-range-slider/dist/vue-range-slider";
 
   .fileinput {
 
@@ -311,7 +376,39 @@ export default {
     .multiselect__option--highlight {
       background-color: lighter(#009688, 10%);
     }
-
 }
+
+  .slider {
+
+      &.range-slider {
+        @include mq($until: mobilePlus) {
+          width: 100%;
+        }
+      }
+
+
+      &.slider-labels {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        list-style: none;
+        line-height: 1;
+
+        @include mq($from: mobilePlus) {
+          width: $slider-width;
+        }
+
+        > li {
+            position: relative;
+            display: inline-block;
+            font-size: .7rem;
+            &:hover {
+              cursor: pointer;
+            }
+        }
+      }
+  }
+
+
 
 </style>

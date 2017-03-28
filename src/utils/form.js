@@ -3,6 +3,8 @@ export default {
     const form = new FormData()
     const item = store.state.newItem
 
+    const priorityMap = ['low', 'middel', 'high']
+
     /**
      * We don't have a very good API setup for authenticating users, so if (currently just a hypothetical)
      * posting fom another domain, and thus not being authenticated, we use the guest entries plugin endpoint
@@ -19,7 +21,8 @@ export default {
     form.append('enabled', '1')
     form.append('sectionId', store.state.config.itemsSectionId)
     form.append('fields[walk_item_parent][]', store.getters.walkId)
-    form.append('fields[walk_item_priority]', 'high')
+
+    form.append('fields[walk_item_priority]', priorityMap[item.priority - 1])
 
     if (item.message) {
       form.append('fields[walk_item_description]', item.message)

@@ -14,9 +14,11 @@
     "axios": "^0.15.3",
     "moment": "^2.17.1",
     "node-js-marker-clusterer": "^1.0.0",
+    "sass-mq": "^3.3.2",
     "slug": "^0.9.1",
     "vue": "^2.1.10",
     "vue-multiselect": "^2.0.0-beta.13",
+    "vue-range-slider": "^0.2.4",
     "vue-router": "^2.2.0"
   },
   "devDependencies": {

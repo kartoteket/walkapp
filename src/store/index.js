@@ -9,6 +9,7 @@ const defaultItem = {
   message: '',
   image: null,
   tags: [],
+  priority: 2,
   position: {
     address: '',
     lat: null,
@@ -109,6 +110,9 @@ export default new Vuex.Store({
     },
     SET_MESSAGE: (state, data) => {
       state.newItem.message = data
+    },
+    SET_PRIORITY: (state, data) => {
+      state.newItem.priority = data
     },
 
     // other states
