@@ -111,7 +111,6 @@ export default {
     },
 
     fileInputButtonCaption: function () {
-      console.log(this.previewImage)
       return this.imagePreview ? 'Endre bildet…' : 'Legg til et bilde…'
     },
 
@@ -216,7 +215,7 @@ export default {
           target, // target scrollY (0 means top of the page)
           300, // duration in ms
           function () {
-            console.log(target, element)
+            // console.log(target, element)
           }
       )
     },
