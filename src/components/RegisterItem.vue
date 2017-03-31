@@ -8,7 +8,7 @@
 
         <input id="js-pac-input" v-bind:class="{ hidden: selectMode }" class="controls pac-input" type="text" placeholder="Flytt på kartet eller søk etter en adresse">
 
-        <div id="js-hiddenmarker" class="selectmarker"  v-bind:class="{ hidden: !editMode }" >
+        <div id="js-hiddenmarker" class="selectmarker" v-show="editMode" v-tooltip.top-center="{ content: postionInfo, show: editMode }">
           <img src="../assets/img/hair-cross.svg" alt="">
         </div>
     </div>
@@ -25,7 +25,13 @@
 /* global google:true */
 import _ from 'lodash'
 import mapStyle from '../assets/json/silver.json'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
+import { VTooltip } from '../../../vue-tooltip'
+
+VTooltip.options = {
+  defaultClass: 'tooltip-theme-arrows',
+  openOn: 'null'
+}
 
 export default {
   name: 'register',
@@ -37,9 +43,13 @@ export default {
       selectMode: true,
       editMode: false,
       map: {},
-      position: {},
+      position: this._position || {},
       loading: true
     }
+  },
+
+  directives: {
+    tooltip: VTooltip
   },
 
   computed: {
@@ -48,11 +58,17 @@ export default {
       'currentCoords',
       'mapConfig'
     ]),
+    ...mapState({
+      _position: state => state.newItem.position
+    }),
     readyToSubmit: function () {
       return !this.currentCoords || false
     },
     submitButtonCaption: function () {
       return this.currentCoords ? 'Videre' : 'Venter…' // 'Venter på posisjon…'
+    },
+    postionInfo: function () {
+      return this.getInfoWindow()
     }
   },
 
@@ -78,16 +94,18 @@ export default {
       staticMarker.style.top = (center.y + 6) + 'px'   // adjusted by calibration
       this.marker.setMap(null)
 
-      this.searchBox = new google.maps.places.SearchBox(input, {bounds: this.map.getBounds()})
-      this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input)
+      if (input) {
+        this.searchBox = new google.maps.places.SearchBox(input, {bounds: this.map.getBounds()})
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input)
 
-      google.maps.event.addListener(this.searchBox, 'places_changed', function (e) {
-        var places = that.searchBox.getPlaces()
-        if (places.length) {
-          // that.position = that.getAddress(position[0]) The panTo re-centers the map  whch triggers updateDragPosition()
-          that.map.panTo(that.getAddress(places[0]))
-        }
-      })
+        google.maps.event.addListener(this.searchBox, 'places_changed', function (e) {
+          var places = that.searchBox.getPlaces()
+          if (places.length) {
+            that.map.panTo(that.getAddress(places[0]))
+          }
+        })
+      }
+
       google.maps.event.addListener(this.map, 'center_changed', _.bind(this.updateDragPosition, this))
     },
 
@@ -126,7 +144,9 @@ export default {
         console.log(marker)
       }
 
-      this.searchBox.setBounds(this.map.getBounds())
+      if (this.searchBox) {
+        this.searchBox.setBounds(this.map.getBounds())
+      }
 
       geocoder.geocode({'location': pos}, function (results, status) {
         if (status === 'OK' && results.length) {
@@ -211,16 +231,14 @@ export default {
                 return true
               }
 
-              var edit = document.getElementsByClassName('js-infowindow-editlocation')
-              // var sel = document.getElementsByClassName('js-infowindow-selectlocation')
-              var infowindow = document.getElementsByClassName('infowindow')[0]
-
               // Move the map a little to the left and down
+              const infowindow = document.getElementsByClassName('infowindow')[0]
               if (infowindow) {
                 that.map.panBy(infowindow.offsetWidth / -2, infowindow.offsetHeight / 2)
               }
 
               // edit location
+              const edit = document.getElementsByClassName('js-infowindow--editlocation')
               edit[0].addEventListener('click', function (e) {
                 e.preventDefault()
                 infoWindow.close()
@@ -228,11 +246,11 @@ export default {
               })
 
               // select location
-              // sel[0].addEventListener( 'click', function (e) {
-              //   e.preventDefault()
-              //   infoWindow.close()
-              //   that.selectLocation()
-              // })
+              document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('js-infowindow--selectlocation')) {
+                  that.selectLocation()
+                }
+              })
             })
           } else {
             window.alert('No results found')
@@ -246,9 +264,14 @@ export default {
     getInfoWindow: function (pos, results) {
       // var url = 'https://maps.googleapis.com/maps/api/staticmap?'
       // var params = ''
-      var img = ''
-      var header
-      var footer
+      let img = ''
+      let header
+      let footer
+      let streetAddress = ''
+
+      if (this.position.address) {
+        streetAddress = this.position.address.split(', ')[0]
+      }
 
       // params += 'zoom=' + this.mapConfig.zoomHigh + 1
       // params += '&center=' + this.position.lat + ',' + this.position.lng
@@ -257,10 +280,10 @@ export default {
       // params += '&key=' + this.static_api_key
 
       // img = '<img class="infowindow__img" src="' + url +  params  + '">'
-      header = '<div class="infowindow__header"><h1>Er dette rett sted?</h1><h2>' + this.position.address + '</h2></div>'
+      header = '<div class="infowindow__header"><h1>Flytt på kartet for å velge sted</h1><h2 title="' + this.position.address + '">' + streetAddress + '</h2></div>'
       footer = '<div class="infowindow__footer">' +
-               '<button class="button width-40% js-infowindow-editlocation">Nei, endre</button>'
-               // + '<button class="button width-40% button--accent js-infowindow-selectlocation">Bruk</button></div>'
+               (this.selectMode ? '<button class="button width-50% js-infowindow js-infowindow--editlocation gutter-half--right">Nei, endre</button>' : '') +
+               '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button></div>'
 
       return '<div class="infowindow">' + header + img + footer + '</div>'
     }
@@ -286,3 +309,200 @@ export default {
 
 }
 </script>
+
+<style lang="scss">
+
+$tooltip_color: #fff;
+$tooltip_arrow_size: 10px;
+
+
+.tooltip {
+  display: none;
+  opacity: 0;
+  transition: opacity .15s;
+  padding: 4px;
+  z-index: 4;
+}
+
+.tooltip .tooltip-content {
+  background: $tooltip_color;
+  color: white;
+  padding: 5px 10px 4px;
+  box-shadow: 0 4px 3px 0 rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+.tooltip.tooltip-open-transitionend {
+  display: block;
+}
+
+.tooltip.tooltip-after-open {
+  opacity: 1;
+}
+
+.tooltip-element, .tooltip-element:after, .tooltip-element:before, .tooltip-element *, .tooltip-element *:after, .tooltip-element *:before {
+  box-sizing: border-box;}
+
+.tooltip-element {
+  position: absolute;
+  display: none;
+}
+
+.tooltip-element.tooltip-open {
+  display: block;
+}
+
+.tooltip-element.tooltip-theme-arrows {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.tooltip-element.tooltip-theme-arrows .tooltip-content {
+  border-radius: 5px;
+  position: relative;
+  font-family: inherit;
+  background: $tooltip_color;
+  color: #eee;
+  padding: 1em;
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
+
+.tooltip-element.tooltip-theme-arrows .tooltip-content:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-width: $tooltip_arrow_size;
+  border-style: solid;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-center .tooltip-content {
+  margin-bottom: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-center .tooltip-content:before {
+  top: 100%;
+  left: 50%;
+  margin-left: -$tooltip_arrow_size;
+  border-top-color: $tooltip_color;
+}
+
+/*
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-center .tooltip-content {
+  margin-top: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-center .tooltip-content:before {
+  bottom: 100%;
+  left: 50%;
+  margin-left: -$tooltip_arrow_size;
+  border-bottom-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-right.tooltip-element-attached-middle .tooltip-content {
+  margin-right: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-right.tooltip-element-attached-middle .tooltip-content:before {
+  left: 100%;
+  top: 50%;
+  margin-top: -$tooltip_arrow_size;
+  border-left-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-left.tooltip-element-attached-middle .tooltip-content {
+  margin-left: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-left.tooltip-element-attached-middle .tooltip-content:before {
+  right: 100%;
+  top: 50%;
+  margin-top: -$tooltip_arrow_size;
+  border-right-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-bottom .tooltip-content {
+  margin-top: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-bottom .tooltip-content:before {
+  bottom: 100%;
+  left: $tooltip_arrow_size;
+  border-bottom-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-bottom .tooltip-content {
+  margin-top: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-top .tooltip-content {
+  margin-bottom: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-top .tooltip-content:before {
+  top: 100%;
+  left: $tooltip_arrow_size;
+  border-top-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-top .tooltip-content {
+  margin-bottom: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-top .tooltip-content:before {
+  top: 100%;
+  right: $tooltip_arrow_size;
+  border-top-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content {
+  margin-right: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content:before {
+  top: $tooltip_arrow_size;
+  left: 100%;
+  border-left-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content {
+  margin-left: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-top.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content:before {
+  top: $tooltip_arrow_size;
+  right: 100%;
+  border-right-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content {
+  margin-right: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-right.tooltip-target-attached-left .tooltip-content:before {
+  bottom: $tooltip_arrow_size;
+  left: 100%;
+  border-left-color: $tooltip_color;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content {
+  margin-left: $tooltip_arrow_size;
+}
+
+.tooltip-element.tooltip-theme-arrows.tooltip-element-attached-bottom.tooltip-element-attached-left.tooltip-target-attached-right .tooltip-content:before {
+  bottom: $tooltip_arrow_size;
+  right: 100%;
+  border-right-color: $tooltip_color;
+} */
+
+.tooltip-element.tooltip-theme-arrows {
+  /*pointer-events: none; */
+}
+
+.tooltip-element.tooltip-theme-arrows .tooltip-content {
+  padding: 0.5em 1em;
+}
+
+</style>

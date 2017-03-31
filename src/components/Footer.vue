@@ -2,7 +2,9 @@
   <div class="webapp__footer" v-if="walk">
       <template v-if="route === 'register'">
           <router-link class="button width-25%" :to="{ name: 'map'}">Tilbake</router-link>
+<!--
           <button v-on:click="selectLocation" class="button button--primary" v-bind:class="{ 'button--disabled' : readyToSubmit }">{{ submitButtonCaption }}</button>
+-->
       </template>
 
       <template v-else-if="route === 'save'">
