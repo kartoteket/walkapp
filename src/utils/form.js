@@ -23,31 +23,31 @@ export default {
     form.append('locale', 'no')
     form.append('enabled', '1')
     form.append('sectionId', store.state.config.itemsSectionId)
-    form.append('fields[walk_item_parent][]', store.getters.walkId)
+    form.append('fields[walkItemParent][]', store.getters.walkId)
 
-    form.append('fields[walk_item_priority]', priorityMap[item.priority - 1])
+    form.append('fields[walkItemPriority]', priorityMap[item.priority - 1])
 
     if (item.message) {
-      form.append('fields[walk_item_description]', item.message)
+      form.append('fields[walkItemDescription]', item.message)
     }
 
     if (item.position.address) {
-      form.append('fields[walk_item_location][line1]', item.position.address)
+      form.append('fields[walkItemLocation][line1]', item.position.address)
     }
 
     if (item.position.lat && item.position.lng) {
-      form.append('fields[walk_item_location][latitude]', item.position.lat)
-      form.append('fields[walk_item_location][longitude]', item.position.lng)
+      form.append('fields[walkItemLocation][latitude]', item.position.lat)
+      form.append('fields[walkItemLocation][longitude]', item.position.lng)
     }
 
     if (item.image) {
-      form.append('fields[walk_item_photo]', item.image)
+      form.append('fields[walkItemPhoto]', item.image)
     }
 
     if (item.tags.length) {
       const tagIds = item.tags.map(tag => tag.id)
       const newTags = item.tags.filter(tag => !tag.hasOwnProperty('id'))
-      form.append('fields[walk_item_tags][]', tagIds) // gets send as string but is transformed to Array backend
+      form.append('fields[walkItemTags][]', tagIds) // gets send as string but is transformed to Array backend
       form.append('newTags', JSON.stringify(newTags)) // stringify to send
     }
 
