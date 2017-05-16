@@ -17,6 +17,15 @@ const defaultItem = {
   }
 }
 
+const hostname = window.location.hostname
+let serverEnv = 'prod'
+if (hostname.indexOf('.dev') >= 0 || hostname.indexOf('localhost') >= 0) { // process.env.NODE_ENV === 'development' tests dev vs build in npm
+  serverEnv = 'dev'
+} else if (hostname.indexOf('dev.') >= 0) {
+  serverEnv = 'staging'
+}
+console.log('Environment: ' + serverEnv)
+
 export default new Vuex.Store({
   state: {
     user: {},
@@ -26,10 +35,12 @@ export default new Vuex.Store({
     newItem: Object.assign({}, defaultItem),
     currentPosition: {},
     loading: false,
+    appMessage: {},
     config: {
+      env: serverEnv,
       apiUrl: '/api',
-      rootUrl: process.env.NODE_ENV === 'development' ? 'https://risiko.dev' : 'https://dev.risikorydding.no',
-      itemsSectionId: 8,
+      rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + window.location.hostname,
+      itemsSectionId: serverEnv === 'prod' ? 7 : 8,
       highlightfirst: false,
       geoConfig: {
         maximumAge: 5 * 60 * 1000,
