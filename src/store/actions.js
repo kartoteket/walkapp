@@ -1,24 +1,34 @@
 import api from '../utils/api.js'
 import form from '../utils/form.js'
+import errors from '../utils/errors.js'
 
 // NB, maybe better to pass in the url when we map the Action to my component, so we can handle any dynamic urls.
 export default {
 
   initApp: (context) => {
     context.dispatch('getUser')
-    context.dispatch('getWalk')
+    if (!context.state.walk) {
+      context.dispatch('getWalk')
+    }
     context.dispatch('getItems')
     context.dispatch('getTags')
     context.dispatch('getLocation')
   },
 
-  getWalk: (context) => {
-    return api.get(context.state.config.apiUrl + '/walks/' + context.getters.walkId + '.json')
-      .then((response) => {
-        context.commit('SET_WALK', response)
-        context.commit('TOGGLE_LOADING', false)
-      })
-      .catch((error) => api.error(context, error))
+  getWalk: (context, id) => {
+    return new Promise((resolve, reject) => {
+      api.get(context.state.config.apiUrl + '/walks/' + (id || context.getters.walkId) + '.json')
+        .then((response) => {
+          context.commit('SET_WALK', response)
+          resolve()
+        })
+        // .catch((error) => api.error(context, error))
+        // .catch((error) => console.log(error))
+        .catch((error) => {
+          errors.handler(context, error)
+          reject()
+        })
+    })
   },
 
   getUser: (context) => {
@@ -75,13 +85,22 @@ export default {
     // console.log(formdata)
     // <- end debug
 
-    return api.post(context.state.config.apiUrl, request, conf)
-      .then((response) => {
-        context.dispatch('getItem', response.data.id)
-        context.commit('TOGGLE_HIGHLIGHT_FIRST', true)
-        context.commit('RESET_NEW_ITEM')
-        context.commit('TOGGLE_LOADING', false)
-      })
-      .catch(error => api.error(context, error))
+    return new Promise((resolve, reject) => {
+      api.post(context.state.config.apiUrl, request, conf)
+        .then((response) => {
+          context.dispatch('getItem', response.data.id)
+          context.commit('TOGGLE_HIGHLIGHT_FIRST', true)
+          context.commit('RESET_NEW_ITEM')
+          context.commit('TOGGLE_LOADING', false)
+          resolve()
+        })
+        .catch((error) => {
+          errors.handler(context, error)
+          // console.log(error.response)
+          // context.commit('APP_MESSAGE', {type: 'error', body: error.response.statusText, title: 'Feil!', code: error.response.status})
+          reject()
+        })
+    })
   }
+
 }

@@ -182,8 +182,13 @@ export default {
       this.$store.commit('SET_PRIORITY', this.priority)
     },
 
-    submit: function () {
-      this.$store.dispatch('saveItem')
+    submit () {
+      this.$store.dispatch('saveItem').then(() => {
+        this.$router.push({name: 'map'})
+      }).catch(() => {
+        this.$refs.modal.open()
+        this.$store.commit('TOGGLE_LOADING', false)
+      })
     },
 
     uploadFile: function (e) {

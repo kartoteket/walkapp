@@ -38,6 +38,7 @@ export default new Vuex.Store({
     appMessage: {},
     config: {
       env: serverEnv,
+      debug: true,
       apiUrl: '/api',
       rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + window.location.hostname,
       itemsSectionId: serverEnv === 'prod' ? 7 : 8,
@@ -135,7 +136,11 @@ export default new Vuex.Store({
     },
     TOGGLE_LOADING: (state, force) => {
       state.loading = (force === false || force === true) ? !!force : !state.loading
+    },
+    APP_MESSAGE: (state, msg) => {
+      state.appMessage = msg
     }
+
   },
 
   actions: actions
