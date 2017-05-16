@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div  v-if="loading" class="is-loading">
+    <div v-if="loading" class="is-loading">
       <clip-loader :loading="loading" :size="spinnerSize"></clip-loader>
     </div>
 
@@ -64,6 +64,21 @@
         :submitButtonCaption="submitButtonCaption"
         :showLogin="showLogin"
     ></footer-component>
+
+    <!-- modal for error messages-->
+    <sweet-modal ref="modal" blocking Xhide-close-button :icon=this.modal.type>
+      <span slot="title">{{ this.modal.title }}</span>
+      {{ this.modal.code }} - {{ this.modal.content }}
+
+      <template slot="button" v-if="this.modal.code === 403">
+        <button class="button button--primary" v-on:click="reload">
+          Last siden på ny (omstart)
+        </button>
+        <a :href="loginUrl" target="_blank" class="button button--primary">
+          Logg inn på ny
+        </a>
+      </template>
+    </sweet-modal>
 
   </div>
 </template>
@@ -75,6 +90,7 @@ import _ from 'lodash'
 import animatedScrollTo from 'animated-scrollto'
 import {mapState} from 'vuex'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+import { SweetModal } from 'sweet-modal-vue'
 
 export default {
   name: 'saveItem',
@@ -82,7 +98,8 @@ export default {
   components: {
     Selector,
     ClipLoader,
-    RangeSlider
+    RangeSlider,
+    SweetModal
   },
 
   data: function () {
@@ -101,9 +118,11 @@ export default {
       user: 'user',
       newItem: 'newItem',
       loading: 'loading',
+      appMessage: 'appMessage',
       message: state => state.newItem.message,
       position: state => state.newItem.position,
-      image: state => state.newItem.image
+      image: state => state.newItem.image,
+      loginUrl: state => state.config.rootUrl + '/vandringer/users/login'
     }),
 
     draft: function () {
@@ -135,9 +154,19 @@ export default {
       return 'Beskrivelse påkrevd'  // 'Venter på beskrivelse…'
     },
 
+    modal: function () {
+      return {
+        type: this.appMessage.type,
+        code: this.appMessage.code,
+        title: this.appMessage.title,
+        content: this.appMessage.body
+      }
+    },
+
+    // TODO: Move to store ??!?
     activeSession: function () {
-      return true // fake it while in dev
-      // return this.user && this.user.isCurrent
+      // return true // fake it while in dev
+      return this.user // && this.user.isCurrent <- We now test for this in the form-util and use gusetentryform if not current user
     }
   },
 
@@ -152,19 +181,18 @@ export default {
     },
 
     activeSession: function () {
+      this.modal.type = 'error'
+      this.modal.code = 403
+      this.modal.title = 'Vi har et problem!'
+      this.modal.content = 'Vi får ikke verifisert brukeren din. Vennligst logg inn på ny.'
+      this.$refs.modal.open()
+
       var that = this
       var interval = this.showLogin ? 0 : 2000
 
       setTimeout(function () {
         that.showLogin = !that.activeSession
       }, interval)
-    },
-
-    // Attempting to dealy re-routing until save/load is complete. Not really perfect yet
-    loading: function (val, oldVal) {
-      if (oldVal) {
-        this.$router.push({name: 'map'})
-      }
     }
   },
 
@@ -229,6 +257,10 @@ export default {
       var interval = this.showLogin ? 1000 : 5000
       this.$store.dispatch('getUser')
       setTimeout(this.checkUser, interval)
+    },
+
+    reload () {
+      location.reload()
     }
   },
 
@@ -251,7 +283,7 @@ export default {
 
   // ref: https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
 
-  $higlight-color: #81766a; //$accent-color; //#d3394c;
+  $higlight-color:       #81766a; //$accent-color; //#d3394c;
   $accent-color:         #bc5731;
   $accent-color-dark:    darken($accent-color, 20%);
 
@@ -276,9 +308,16 @@ export default {
       // Tweakpoints
       mobilePlus: 420px
   );
-  @import "~sass-mq/mq";
 
+  @import "~sass-mq/mq";
   @import "~vue-range-slider/dist/vue-range-slider";
+
+  // sweet modal overrides
+  .sweet-modal {
+    .sweet-box-actions .sweet-action-close:hover {
+      background-color: #f59e22 !important;
+    }
+  }
 
   .fileinput {
 
