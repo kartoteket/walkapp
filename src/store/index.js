@@ -34,7 +34,7 @@ export default new Vuex.Store({
     tags: [],
     newItem: Object.assign({}, defaultItem),
     currentPosition: {},
-    loading: false,
+    loading: true,
     appMessage: {},
     config: {
       env: serverEnv,
