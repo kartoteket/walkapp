@@ -110,10 +110,11 @@ export default {
   watch: {
     walk: function (val, oldVal) {
       if (val.id) {
-        this.loading = false
+        this.$store.commit('TOGGLE_LOADING', false)
       }
     }
   },
+
   methods: {
     submit () {
       this.$store.commit('TOGGLE_LOADING', true)
