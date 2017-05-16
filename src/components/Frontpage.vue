@@ -44,7 +44,7 @@
       </template>
 
       <div class="webapp__content center-content" v-else>
-          <div>
+          <div v-if="!this.loading">
             <div class="group form">
                 <h1>Skriv inn vandringens kode</h1>
                 <form @submit.prevent="submit" class="gutter-half--top">
@@ -82,7 +82,8 @@ export default {
   data: () => {
     return {
       id: this.walkId,
-      spinnerSize: '100px'
+      spinnerSize: '100px',
+      notFound: false
     }
   },
 
@@ -98,35 +99,44 @@ export default {
     ...mapGetters([
       'itemsCount',
       'prettyDate'
-    ]),
-    notFound: function () {
-      return !this.loading && this.walkId && !this.walk
-    }
+    ])
+    // notFound: function () {
+    //   debugger
+    //   console.log(!this.loading && this.walkId && !this.walk)
+    //   return !this.loading && this.walkId && !this.walk
+    // }
   },
 
   watch: {
     walk: function (val, oldVal) {
       if (val.id) {
-        console.log(val.id)
         this.loading = false
       }
     }
   },
   methods: {
-    submit: function () {
+    submit () {
       this.$store.commit('TOGGLE_LOADING', true)
-      this.$router.replace({name: 'frontpage', params: { walk_id: this.id }})
-      this.$store.dispatch('initApp')
+      this.$store.dispatch('getWalk', this.id).then(() => {
+        this.$store.commit('TOGGLE_LOADING', false)
+        this.$router.replace({name: 'frontpage', params: { walk_id: this.id }})
+        this.$store.dispatch('initApp')
+      }).catch(() => {
+        this.$store.commit('TOGGLE_LOADING', false)
+        this.notFound = true
+      })
     }
   },
 
   created: function () {
-    this.$store.commit('TOGGLE_LOADING', false)
+    // this.$store.commit('TOGGLE_LOADING', true)
   },
 
   mounted () {
-    // use this to pass any id in the URL as default value to input
-    this.id = this.walkId
+    this.id = this.walkId // use this to pass any id in the URL as default value to input
+    if (!this.id) {
+      this.$store.commit('TOGGLE_LOADING', false)
+    }
   }
 }
 </script>
