@@ -30,12 +30,6 @@ export default {
 
   props: ['readyToSubmit', 'submitButtonCaption', 'selectLocation', 'draft', 'submit', 'showLogin'],
 
-  data: function () {
-    return {
-      loginUrl: '/vandringer/users/login'
-    }
-  },
-
   computed: {
 
     walk () {
@@ -48,6 +42,10 @@ export default {
 
     route: function () {
       return this.$route.name
+    },
+
+    loginUrl () {
+      return this.$store.state.config.rootUrl + '/vandringer/users/login'
     },
 
     // logoutUrl: function () {
