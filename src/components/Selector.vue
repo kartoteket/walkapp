@@ -58,3 +58,7 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+  @import "~vue-multiselect/dist/vue-multiselect.min.css";
+</style>
