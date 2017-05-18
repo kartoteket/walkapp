@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import slug from 'slug'
+import slug from 'url-slug'
 import Multiselect from 'vue-multiselect'
 import {mapState} from 'vuex'
 export default {
