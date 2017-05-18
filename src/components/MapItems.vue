@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       map: {},
-      isLoading: true,
+      isLoading: false, // tmp fix - finished loading not triggering consitently
       spinnerSize: '100px'
     }
   },

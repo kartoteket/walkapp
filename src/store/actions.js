@@ -13,6 +13,7 @@ export default {
     context.dispatch('getItems')
     context.dispatch('getTags')
     context.dispatch('getLocation')
+    // context.commit('TOGGLE_LOADING', false)
   },
 
   getWalk: (context, id) => {

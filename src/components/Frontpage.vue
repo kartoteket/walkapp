@@ -134,10 +134,8 @@ export default {
   },
 
   mounted () {
-    this.id = this.walkId // use this to pass any id in the URL as default value to input
-    if (!this.id) {
-      this.$store.commit('TOGGLE_LOADING', false)
-    }
+    this.id = this.walkId     // use this to pass any id in the URL as default value to input
+    this.$store.commit('TOGGLE_LOADING', false)
   }
 }
 </script>
