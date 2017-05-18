@@ -5,18 +5,12 @@
     <div role="main" class="webapp__content">
         <div>
 
-          <div class="group" style="text-align: center;">
-            <img v-show="imagePreview" :src="imagePreview" class="img-preview" width="100">
-            <input id="fileInput" class="fileinput" :class="{ 'fileinput--small' : imagePreview }" type="file" v-on:change="uploadFile" accept="image/*" capture="camera">
-            <label for="fileInput">
-              <figure>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                    <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
-                </svg>
-              </figure>
-              <span>{{fileInputButtonCaption}}</span>
-            </label>
-          </div>
+          <image-uploader
+            :debug="true"
+            :maxWidth="512"
+            :quality="0.7"
+            outputFormat="verbose"
+            @input="setImage"></image-uploader>
 
           <div class="group form">
             <label class="item-desc">Beskrivelse</label>
@@ -86,6 +80,7 @@
 <script>
 import RangeSlider from 'vue-range-slider'
 import Selector from './Selector'
+import ImageUploader from './Imageuploader'
 import _ from 'lodash'
 import animatedScrollTo from 'animated-scrollto'
 import {mapState} from 'vuex'
@@ -99,13 +94,12 @@ export default {
     Selector,
     ClipLoader,
     RangeSlider,
+    ImageUploader,
     SweetModal
   },
 
   data: function () {
     return {
-      imagePreview: null,
-      hasFile: false,
       showLogin: false,
       spinnerSize: '100px',
       priority: 2
@@ -127,10 +121,6 @@ export default {
 
     draft: function () {
       return !(this.message && this.position) || this.loading || false
-    },
-
-    fileInputButtonCaption: function () {
-      return this.imagePreview ? 'Endre bildet…' : 'Legg til et bilde…'
     },
 
     submitButtonCaption: function () {
@@ -171,10 +161,6 @@ export default {
   },
 
   watch: {
-
-    image: function (val, oldVal) {
-      this.createPreview()
-    },
 
     priority: function (val) {
       this.setPriority()
@@ -219,26 +205,6 @@ export default {
       })
     },
 
-    uploadFile: function (e) {
-      var file = e.target.files && e.target.files.length ? e.target.files[0] : null
-      if (file) {
-        this.setImage(file)
-      }
-    },
-
-    createPreview: function () {
-      var that = this
-      var reader = new FileReader()
-
-      reader.addEventListener('load', function () {
-        that.imagePreview = reader.result
-      }, false)
-
-      if (this.image) {
-        reader.readAsDataURL(this.image)
-      }
-    },
-
     scrollIntoView: function (e) {
       var element = document.getElementsByClassName('webapp__content')[0]
       var target = element.offsetHeight - 20
@@ -269,12 +235,6 @@ export default {
 
     // ping session to make sure we have a user
     // this.checkUser()
-  },
-
-  mounted: function () {
-    if (this.image) {
-      this.createPreview()
-    }
   }
 }
 </script>

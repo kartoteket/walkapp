@@ -12,6 +12,8 @@
   "dependencies": {
     "animated-scrollto": "^1.1.0",
     "axios": "^0.15.3",
+    "blueimp-canvas-to-blob": "^3.7.0",
+    "exif-js": "^2.2.1",
     "moment": "^2.17.1",
     "node-js-marker-clusterer": "^1.0.0",
     "raven-js": "^3.13.1",
