@@ -108,10 +108,9 @@ export default {
   },
 
   watch: {
-    walk: function (val, oldVal) {
-      if (val.id) {
-        this.$store.commit('TOGGLE_LOADING', false)
-      }
+    // a good time to know all is loaded
+    itemsCount: function (val, oldVal) {
+      this.$store.commit('TOGGLE_LOADING', false)
     }
   },
 
@@ -119,9 +118,9 @@ export default {
     submit () {
       this.$store.commit('TOGGLE_LOADING', true)
       this.$store.dispatch('getWalk', this.id).then(() => {
-        this.$store.commit('TOGGLE_LOADING', false)
         this.$router.replace({name: 'frontpage', params: { walk_id: this.id }})
         this.$store.dispatch('initApp')
+        // this.$store.commit('TOGGLE_LOADING', false)
       }).catch(() => {
         this.$store.commit('TOGGLE_LOADING', false)
         this.notFound = true
@@ -135,7 +134,11 @@ export default {
 
   mounted () {
     this.id = this.walkId     // use this to pass any id in the URL as default value to input
-    this.$store.commit('TOGGLE_LOADING', false)
+
+    // no walk, turn of loading to show input form
+    if (!this.id) {
+      this.$store.commit('TOGGLE_LOADING', false)
+    }
   }
 }
 </script>

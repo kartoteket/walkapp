@@ -13,7 +13,6 @@ export default {
     context.dispatch('getItems')
     context.dispatch('getTags')
     context.dispatch('getLocation')
-    // context.commit('TOGGLE_LOADING', false)
   },
 
   getWalk: (context, id) => {
@@ -23,8 +22,6 @@ export default {
           context.commit('SET_WALK', response)
           resolve()
         })
-        // .catch((error) => api.error(context, error))
-        // .catch((error) => console.log(error))
         .catch((error) => {
           errors.handler(context, error)
           reject()
@@ -77,7 +74,7 @@ export default {
     const conf = {
       headers: {'X-Requested-With': 'XMLHttpRequest'}
     }
-    context.commit('TOGGLE_LOADING', true)
+
     // debug ->
     // let formdata = {}
     // for (var pair of request.entries()) {
@@ -92,7 +89,6 @@ export default {
           context.dispatch('getItem', response.data.id)
           context.commit('TOGGLE_HIGHLIGHT_FIRST', true)
           context.commit('RESET_NEW_ITEM')
-          context.commit('TOGGLE_LOADING', false)
           resolve()
         })
         .catch((error) => {

@@ -197,11 +197,13 @@ export default {
     },
 
     submit () {
+      this.$store.commit('TOGGLE_LOADING', true)
       this.$store.dispatch('saveItem').then(() => {
+        this.$store.commit('TOGGLE_LOADING', false)
         this.$router.push({name: 'map'})
       }).catch(() => {
-        this.$refs.modal.open()
         this.$store.commit('TOGGLE_LOADING', false)
+        this.$refs.modal.open()
       })
     },
 
