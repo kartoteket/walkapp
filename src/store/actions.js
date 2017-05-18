@@ -84,11 +84,11 @@ export default {
     // <- end debug
 
     return new Promise((resolve, reject) => {
+      context.commit('RESET_NEW_ITEM')
       api.post(context.state.config.apiUrl, request, conf)
         .then((response) => {
           context.dispatch('getItem', response.data.id)
           context.commit('TOGGLE_HIGHLIGHT_FIRST', true)
-          context.commit('RESET_NEW_ITEM')
           resolve()
         })
         .catch((error) => {
