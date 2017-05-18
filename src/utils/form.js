@@ -39,8 +39,13 @@ export default {
       form.append('fields[walkItemLocation][longitude]', item.position.lng)
     }
 
+    // TODO: document
     if (item.image) {
-      form.append('fields[walkItemPhoto]', item.image)
+      if (item.image instanceof File) {
+        form.append('fields[walkItemPhoto]', item.image)
+      } else {
+        form.append('CustomWalkItemPhoto', JSON.stringify(item.image))
+      }
     }
 
     if (item.tags.length) {
