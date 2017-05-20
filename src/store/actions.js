@@ -32,7 +32,6 @@ export default {
 
   getUser: (context) => {
     return api.get(context.state.config.apiUrl + '/user/me.json')
-      .catch((error) => console.log(error))
       .then((response) => {
         if (context.state.config.sentry.logUser) {
           Raven.setUserContext({
@@ -42,24 +41,26 @@ export default {
           })
         }
         context.commit('SET_USER', response)
+      })
+      .catch((error) => errors.handler(context, error))
   },
 
   getItem: (context, id) => {
     return api.get(context.state.config.apiUrl + '/walks/items/' + id + '.json')
       .then((response) => context.commit('APPEND_ITEMS', response))
-      .catch((error) => console.log(error))
+      .catch((error) => errors.handler(context, error))
   },
 
   getItems: (context) => {
     return api.get(context.state.config.apiUrl + '/walks/' + context.getters.walkId + '/items.json')
       .then((response) => context.commit('SET_ITEMS', response.data))
-      .catch((error) => console.log(error))
+      .catch((error) => errors.handler(context, error))
   },
 
   getTags: (context) => {
     return api.get(context.state.config.apiUrl + '/tags.json')
       .then((response) => context.commit('SET_TAGS', response.data))
-      .catch((error) => console.log(error))
+      .catch((error) => errors.handler(context, error))
   },
 
   getLocation: (context) => {
