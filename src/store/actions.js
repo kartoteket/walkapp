@@ -1,6 +1,7 @@
 import api from '../utils/api.js'
 import form from '../utils/form.js'
 import errors from '../utils/errors.js'
+import Raven from 'raven-js'
 
 // NB, maybe better to pass in the url when we map the Action to my component, so we can handle any dynamic urls.
 export default {
@@ -31,8 +32,16 @@ export default {
 
   getUser: (context) => {
     return api.get(context.state.config.apiUrl + '/user/me.json')
-      .then((response) => context.commit('SET_USER', response))
       .catch((error) => console.log(error))
+      .then((response) => {
+        if (context.state.config.sentry.logUser) {
+          Raven.setUserContext({
+            email: response.email,
+            id: response.id,
+            name: response.name
+          })
+        }
+        context.commit('SET_USER', response)
   },
 
   getItem: (context, id) => {
