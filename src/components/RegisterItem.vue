@@ -23,7 +23,7 @@
 
 <script>
 /* global google:true */
-import _ from 'lodash'
+import _ from 'lodash/core'
 import mapStyle from '../assets/json/silver.json'
 import {mapGetters, mapState} from 'vuex'
 import { VTooltip } from '../../../vue-tooltip'
