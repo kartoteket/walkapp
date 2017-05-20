@@ -6,11 +6,14 @@
         <div>
 
           <image-uploader
-            :debug="true"
+            :debug="false"
             :maxWidth="512"
             :quality="0.7"
             outputFormat="verbose"
-            @input="setImage"></image-uploader>
+            @input="setImage"
+            @onUpload="startImageResize"
+            @onComplete="endImageResize"
+            ></image-uploader>
 
           <div class="group form">
             <label class="item-desc">Beskrivelse</label>
@@ -190,6 +193,14 @@ export default {
 
     setImage: function (file) {
       this.$store.commit('SET_IMAGE', file)
+    },
+
+    startImageResize () {
+      this.$store.commit('TOGGLE_LOADING', true)
+    },
+
+    endImageResize () {
+      this.$store.commit('TOGGLE_LOADING')
     },
 
     setPriority: function () {
