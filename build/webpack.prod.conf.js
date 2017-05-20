@@ -22,6 +22,14 @@ var webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+
+
+    // svale
+    // ref: https://webpack.js.org/plugins/context-replacement-plugin/
+    // ref: https://github.com/moment/moment/issues/1435
+    // ref: https://github.com/moment/moment/issues/2517
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb|nn/),
+
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
