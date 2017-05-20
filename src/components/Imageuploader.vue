@@ -133,7 +133,8 @@ export default {
     uploadFile (e) {
       var file = e.target.files && e.target.files.length ? e.target.files[0] : null
       if (file) {
-        this.handleFile(file)
+        this.emitLoad()
+        this.handleFile(file, this.emitComplete)
       }
     },
 
@@ -145,6 +146,14 @@ export default {
     emitEvent (output) {
       this.$emit('input', output)
       this.$emit('change', output)
+    },
+
+    emitLoad () {
+      this.$emit('onUpload')
+    },
+
+    emitComplete () {
+      this.$emit('onComplete')
     },
 
     /**
@@ -288,6 +297,9 @@ export default {
       this.imagePreview = imageData
       // this.emitEvent(this.currentFile) // DEBUG
       this.emitEvent(this.formatOutput(imageData))
+
+      // complete
+      completionCallback()
       // this.performUpload(imageData, completionCallback)
     },
 
