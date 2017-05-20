@@ -24,6 +24,7 @@ if (hostname.indexOf('.dev') >= 0 || hostname.indexOf('localhost') >= 0) { // pr
 } else if (hostname.indexOf('dev.') >= 0) {
   serverEnv = 'staging'
 }
+const isProduction = serverEnv === 'prod'
 console.log('Environment: ' + serverEnv)
 
 export default new Vuex.Store({
@@ -39,9 +40,14 @@ export default new Vuex.Store({
     config: {
       env: serverEnv,
       debug: true,
+      sentry: {
+        capture: isProduction,
+        logUser: isProduction,
+        userFeedback: isProduction
+      },
       apiUrl: '/api',
       rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + window.location.hostname,
-      itemsSectionId: serverEnv === 'prod' ? 7 : 8,
+      itemsSectionId: isProduction ? 7 : 8,
       highlightfirst: false,
       geoConfig: {
         maximumAge: 5 * 60 * 1000,
