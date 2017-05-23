@@ -158,8 +158,12 @@ export default {
 
     // TODO: Move to store ??!?
     activeSession: function () {
-      // return true // fake it while in dev
-      return this.user // && this.user.isCurrent <- We now test for this in the form-util and use gusetentryform if not current user
+      // console.log(+this.user.id)
+      // console.log(this.user.name)
+      // console.log(this.user.isCurrent)
+
+      return true // TODO: not solid enough yet. This should be moved to vuex/app init() lifecycle states
+      // return this.user // && this.user.isCurrent <- We now test for this in the form-util and use gusetentryform if not current user
     }
   },
 
