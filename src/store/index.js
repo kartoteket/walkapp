@@ -47,7 +47,7 @@ export default new Vuex.Store({
       },
       apiUrl: '/api',
       rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + window.location.hostname,
-      itemsSectionId: isProduction ? 7 : 8,
+      itemsSectionId: isProduction ? 7 : 7, // currently in sync, but that may change
       highlightfirst: false,
       geoConfig: {
         maximumAge: 5 * 60 * 1000,
