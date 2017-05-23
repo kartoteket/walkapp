@@ -10,7 +10,7 @@ export default {
      * posting fom another domain, and thus not being authenticated, we use the guest entries plugin endpoint
      * and set the author in an onSave-hook in the backend
      */
-    if (store.state.config.env === 'dev' || !store.state.user.isCurrent) {  // testing from localhost or not current user
+    if (process.env.NODE_ENV === 'development' || !store.state.user.isCurrent) {  // testing from localhost or not current user
       form.append('action', 'GuestEntries/saveEntry')
       form.append('authorId', store.getters.userId)
     } else {
