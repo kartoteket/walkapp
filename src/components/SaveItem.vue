@@ -6,9 +6,10 @@
         <div>
 
           <image-uploader
-            :debug="false"
+            :debug="1"
             :maxWidth="512"
             :quality="0.7"
+            :autoRotate="true"
             outputFormat="verbose"
             @input="setImage"
             @onUpload="startImageResize"
