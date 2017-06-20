@@ -117,8 +117,11 @@ export default {
   methods: {
     submit () {
       this.$store.commit('TOGGLE_LOADING', true)
-      this.$store.dispatch('getWalk', this.id).then(() => {
-        this.$router.replace({name: 'frontpage', params: { walk_id: this.id }})
+
+      const id = isNaN(this.id) ? window.atob(this.id) : this.id
+
+      this.$store.dispatch('getWalk', id).then(() => {
+        this.$router.replace({name: 'frontpage', params: { walk_id: id }})
         this.$store.dispatch('initApp')
         // this.$store.commit('TOGGLE_LOADING', false)
       }).catch(() => {
