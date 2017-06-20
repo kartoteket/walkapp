@@ -13,7 +13,7 @@
     "animated-scrollto": "^1.1.0",
     "axios": "^0.15.3",
     "blueimp-canvas-to-blob": "^3.7.0",
-    "exif-js": "^2.2.1",
+    "exif-js": "^2.1.1",
     "moment": "^2.17.1",
     "node-js-marker-clusterer": "^1.0.0",
     "raven-js": "^3.13.1",
@@ -23,9 +23,13 @@
     "v-tooltip": "^1.1.6",
     "vue": "^2.1.10",
     "vue-analytics": "^3.0.2",
+    "vue-image-upload-resize": "file:../vue-image-uploader",
     "vue-multiselect": "^2.0.0-beta.13",
     "vue-range-slider": "^0.2.4",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "vue-spinner": "^1.0.2",
+    "vuex": "^2.3.1",
+    "vuex-router-sync": "^4.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
