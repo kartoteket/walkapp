@@ -1,3 +1,40 @@
+<script>
+/**
+ * vue-ImageUploader: a to-the-point vue-component for client-side image upload with resizing of images (JPG, PNG, GIF)
+ *
+ * Code based on ImageUploader (c) Ross Turner (https://github.com/rossturner/HTML5-ImageUploader).
+ * Adapted for Vue by Svale Fossåskaret / Kartoteket with some adaptions.
+ *
+ * Requires exif.js (https://github.com/exif-js/exif-js) for JPEG autoRotate functions.
+ *
+ *
+ * TODO Items:
+ * 1. Remove all wrapping markup (input only), but preserve option for imagePreview and reative buttonCaption
+ * 1. Progress Report
+ * 2. Multiple Files
+ * 3. Suport custom completion callback
+ *
+ *
+ * LICENSE (from original ImageUploader files by Ross Turner):
+ *
+ * Copyright (c) 2012 Ross Turner and contributors (https://github.com/zsinj)
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+**/
+</script>
+
 <template>
   <div class="group" style="text-align: center;">
     <img v-show="imagePreview" :src="imagePreview" class="img-preview" width="100">
@@ -8,19 +45,12 @@
             <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
         </svg>
       </figure>
-      <span>{{fileInputButtonCaption}}</span>
+      <span class="upload-caption">{{fileInputButtonCaption}}</span>
     </label>
   </div>
 </template>
 
 <script>
-/**
- * TODO Items:
- * 1. Remove all wrapping markup (input only), but preserve option for imagePreview and reative buttonCaption
- * 1. Progress Report
- * 2. Multiple Files
- * 3. Suport custom completion callback
- */
 import EXIF from 'exif-js'
 import dataURLtoBlob from 'blueimp-canvas-to-blob'
 
@@ -101,13 +131,13 @@ export default {
     },
 
     /**
-     * [debug description]
+     * How much to write to the console. 0 = silent. 1 = quite. 2 = loud
      * @default false
      * @type {Boolean}
      */
     debug: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 0
     }
 
   },
@@ -144,6 +174,11 @@ export default {
      * @return {[type]}        [description]
      */
     emitEvent (output) {
+      if (this.debug > 1) {
+        console.log('emitEvent() is called with output:')
+        console.log(output)
+      }
+
       this.$emit('input', output)
       this.$emit('change', output)
     },
@@ -163,19 +198,34 @@ export default {
      * @return {}         nada
      */
     handleFile (file, completionCallback) {
+      if (this.debug > 1) {
+        console.log('handleFile() is called with file:')
+        console.log(file)
+      }
+
       this.currentFile = file
+
       var that = this
       var img = document.createElement('img')
       var reader = new FileReader()
 
       reader.onload = function (e) {
+        if (that.debug > 1) {
+          console.log('reader.onload() is triggered')
+        }
+
         img.src = e.target.result
         img.onload = function () {
+          if (that.debug > 1) {
+            console.log('img.onload() is triggered')
+          }
+
           // Rotate image first if required
           if (that.autoRotate) {
-            if (this.debug) {
+            if (that.debug) {
               console.log('ImageUploader: detecting image orientation...')
             }
+
             if ((typeof EXIF.getData === 'function') && (typeof EXIF.getTag === 'function')) {
               EXIF.getData(img, function () {
                 var orientation = EXIF.getTag(this, 'Orientation')
@@ -188,9 +238,13 @@ export default {
               console.error('ImageUploader: can\'t read EXIF data, the Exif.js library not found')
               that.scaleImage(img, completionCallback)
             }
+          } else {
+            console.log('No autoRotate')
+            that.scaleImage(img, completionCallback)
           }
         }
       }
+
       reader.readAsDataURL(file)
     },
 
@@ -202,6 +256,10 @@ export default {
      * @return {[type]}                    [description]
      */
     scaleImage (img, completionCallback, orientation) {
+      if (this.debug > 1) {
+        console.log('scaleImage() is called')
+      }
+
       var canvas = document.createElement('canvas')
       canvas.width = img.width
       canvas.height = img.height
@@ -293,7 +351,11 @@ export default {
         this.onScale(imageData)
       }
 
-      // svale: juhu! Display and return the new image
+      if (this.debug > 1) {
+        console.log('New ImageData is ready. Set Preview, emitEvent and trigger optional callback ')
+      }
+
+      // Display and return the new image
       this.imagePreview = imageData
       // this.emitEvent(this.currentFile) // DEBUG
       this.emitEvent(this.formatOutput(imageData))
@@ -380,7 +442,9 @@ export default {
     /**
      * Sets the format otf the component output
      * @param  {string} imageData  dataUrl
-     * @return {mixed}             Eithe simple dataUrl string, object with dataURl and metadata or blob
+     * @return {mixed}             Either simple dataUrl string or
+     *                                    object with dataURl and metadata or
+     *                                    blob
      */
     formatOutput (imageData) {
       if (this.outputFormat === 'blob') {
