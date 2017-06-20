@@ -125,7 +125,7 @@ export default {
         /* eslint-disable no-new */
         /* var markerCluster = */new MarkerClusterer(that.map, markers,
           {
-            imagePath: 'http://risiko.dev/img/walks/m', // Go external because local path does not play well with webpack assets managment...
+            imagePath: this.config.rootUrl + '/img/walks/m', // Go external because local path does not play well with webpack assets managment...
             maxZoom: 18
           }
         )
