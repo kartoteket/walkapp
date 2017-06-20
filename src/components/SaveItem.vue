@@ -83,7 +83,8 @@
 <script>
 import RangeSlider from 'vue-range-slider'
 import Selector from './Selector'
-import ImageUploader from './Imageuploader'
+import { ImageUploader } from 'vue-image-upload-resize'
+// import ImageUploader from './Imageuploader'
 import _ from 'lodash/core'
 import animatedScrollTo from 'animated-scrollto'
 import {mapState} from 'vuex'
@@ -97,8 +98,8 @@ export default {
     Selector,
     ClipLoader,
     RangeSlider,
-    ImageUploader,
-    SweetModal
+    SweetModal,
+    ImageUploader
   },
 
   data: function () {
