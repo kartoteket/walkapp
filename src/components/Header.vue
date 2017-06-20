@@ -73,5 +73,6 @@ export default {
   }
   .mobile-menu-overlay {
     background-color: #e77f25;
+    overflow-y: scroll;
   }
 </style>
