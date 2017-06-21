@@ -40,6 +40,10 @@ export default {
       return this.$store.getters.walkId
     },
 
+    itemsCount: function () {
+      return this.$store.getters.itemsCount
+    },
+
     route: function () {
       return this.$route.name
     },
@@ -70,7 +74,8 @@ export default {
         'frontpage': [
           {
             target: {name: 'map'},
-            label: 'Vis funn i kart'
+            label: 'Vis funn i kart',
+            class: this.itemsCount ? 'button' : 'hidden'
           },
           {
             target: {name: 'register'},
