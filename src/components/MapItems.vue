@@ -136,9 +136,9 @@ export default {
       // zoom map to currentPosition if no markers
       } else {
         if (this.currentCoords) {
-          this.map.setCenter(that.currentCoords)
+          this.map.setCenter(this.currentCoords)
         } else {
-          this.$watch('currentCoords', this.map.setCenter(that.currentCoords))
+          this.$watch('currentCoords', this.map.setCenter(this.currentCoords))
         }
       }
     },
@@ -178,9 +178,10 @@ export default {
   // },
 
   mounted: function () {
-    if (this.items.length) {
-      this.createMapMarkers()
-    }
+    this.createMapMarkers()
+    // if (this.items.length) {
+    //   this.createMapMarkers()
+    // }
   }
 }
 </script>
