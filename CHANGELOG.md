@@ -1,10 +1,8 @@
 # Changelog
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0] - 2017-06-21
 
 ### Changed
 - Hide frontpage button for showing items in map if there are no items to show
@@ -17,10 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - A default initial location (Stotorvet, Oslo) if geoPositioning is turned off or fails on device
 - A flag for when geo positioning is not avilable
 
+
 ## [1.0.0] - 2017-06-20
 
-Initial beta release
+- Initial beta release
 
+## [Unreleased]
 
 
 ## [< 1.0.0 ] Untracked History
