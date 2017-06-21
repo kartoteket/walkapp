@@ -315,6 +315,12 @@ export default {
 $tooltip_color: #fff;
 $tooltip_arrow_size: 10px;
 
+// Quick fix to remove close button on infowindw
+.gm-style-iw + div {
+  display: none;
+  pointer-events: none;
+}
+
 
 .tooltip {
   display: none;
