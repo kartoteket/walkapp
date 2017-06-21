@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Hide close icon on map select position info window
 - Adjusted basic zoom-levels
 - Adapated zoom levels to if geoPositioning is avilable or not
+- Page title from "Risikorydding" to "Trygghetsvandring" 
 
 ### Added
 - Changelog
@@ -16,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - A flag for when geo positioning is not avilable
 
 
-## [1.0.0] - 2017-06-20
+## [1.0.0] - 2017-04-21
 
 - Initial beta release
 
