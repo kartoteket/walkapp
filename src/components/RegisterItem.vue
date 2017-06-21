@@ -56,7 +56,8 @@ export default {
     ...mapGetters([
       'walkId',
       'currentCoords',
-      'mapConfig'
+      'mapConfig',
+      'geoConfig'
     ]),
     ...mapState({
       _position: state => state.newItem.position

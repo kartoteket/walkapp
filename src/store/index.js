@@ -93,6 +93,10 @@ export default new Vuex.Store({
 
     mapConfig: state => {
       return state.config.mapConfig
+    },
+
+    geoConfig: state => {
+      return state.config.geoConfig
     }
 
   },
