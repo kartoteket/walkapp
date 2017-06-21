@@ -74,12 +74,12 @@ export default {
       //  3: timed out
       console.log('Error occurred. Error code: ' + error.code)
       const staticPosition = {coords: {latitude: 59.912702, longitude: 10.745366}}  // stortorvet, Oslo
-      context.commit('SET_CURRENT_POSITION', staticPosition, false)
+      context.commit('SET_CURRENT_POSITION', staticPosition)
     }
 
     var geoSuccess = function (position) {
       // console.log(position, (that.currentPosition.timestamp === position.timestamp ? 'cached' : 'new'))
-      context.commit('SET_CURRENT_POSITION', position, true)
+      context.commit('SET_CURRENT_POSITION', position)
     }
 
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)

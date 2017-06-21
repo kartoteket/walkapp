@@ -50,7 +50,7 @@ export default new Vuex.Store({
       itemsSectionId: isProduction ? 7 : 7, // currently in sync, but that may change
       highlightfirst: false,
       geoConfig: {
-        enabled: false,
+        enabled: false,  // Todo: Probably best to move this pout of config
         maximumAge: 5 * 60 * 1000,
         timeout: 10 * 1000,
         enableHighAccuracy: true
@@ -143,8 +143,8 @@ export default new Vuex.Store({
     },
 
     // other states
-    SET_CURRENT_POSITION: (state, data, geoPosition) => {
-      state.config.geoConfig.enabled = geoPosition // if position is from sensors or static
+    SET_CURRENT_POSITION: (state, data) => {
+      state.config.geoConfig.enabled = !!data.timestamp // if position is from sensors or static
       state.currentPosition = data
     },
     TOGGLE_HIGHLIGHT_FIRST: (state, force) => {
