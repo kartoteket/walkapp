@@ -186,7 +186,7 @@ export default {
       var mapElm = document.getElementById('funnmap')
       var mapOptions = {
         center: pos,
-        zoom: this.mapConfig.zoomHigh - 2,
+        zoom: this.mapConfig.zoomBase,
         styles: mapStyle
       }
       var icon = {
@@ -219,7 +219,7 @@ export default {
 
             // center map on marker. Gets paned a little bit after domready.
             that.map.setCenter(that.position)
-            that.map.setZoom(that.mapConfig.zoomHigh)
+            that.map.setZoom(that.geoConfig.enabled ? mapOptions.zoom : mapOptions.zoom - 10) // if no peo positioning, zoom out
 
             infoWindow.setContent(that.getInfoWindow())
             infoWindow.open(that.map, that.marker)

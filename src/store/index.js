@@ -50,12 +50,13 @@ export default new Vuex.Store({
       itemsSectionId: isProduction ? 7 : 7, // currently in sync, but that may change
       highlightfirst: false,
       geoConfig: {
+        enabled: false,
         maximumAge: 5 * 60 * 1000,
         timeout: 10 * 1000,
         enableHighAccuracy: true
       },
       mapConfig: {
-        zoomBase: 10,
+        zoomBase: 18,
         zoomLow: 5,
         zoomHigh: 20
       }
@@ -134,7 +135,8 @@ export default new Vuex.Store({
     },
 
     // other states
-    SET_CURRENT_POSITION: (state, data) => {
+    SET_CURRENT_POSITION: (state, data, geoPosition) => {
+      state.config.geoConfig.enabled = geoPosition // if position is from sensors or static
       state.currentPosition = data
     },
     TOGGLE_HIGHLIGHT_FIRST: (state, force) => {

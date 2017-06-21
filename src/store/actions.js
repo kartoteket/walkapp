@@ -67,13 +67,19 @@ export default {
     var geoOptions = context.state.config.geoConfig
 
     var geoError = function (error) {
-      // error.code can be: 0: unknown error, 1: permission denied, 2: position unavailable (error response from location provider), 3: timed out
+      // error.code can be:
+      //  0: unknown error,
+      //  1: permission denied,
+      //  2: position unavailable (error response from location provider),
+      //  3: timed out
       console.log('Error occurred. Error code: ' + error.code)
+      const staticPosition = {coords: {latitude: 59.912702, longitude: 10.745366}}  // stortorvet, Oslo
+      context.commit('SET_CURRENT_POSITION', staticPosition, false)
     }
 
     var geoSuccess = function (position) {
       // console.log(position, (that.currentPosition.timestamp === position.timestamp ? 'cached' : 'new'))
-      context.commit('SET_CURRENT_POSITION', position)
+      context.commit('SET_CURRENT_POSITION', position, true)
     }
 
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
