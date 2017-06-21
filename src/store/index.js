@@ -83,8 +83,12 @@ export default new Vuex.Store({
       return ''
     },
 
+    // LatLngLiteral - https://developers.google.com/maps/documentation/javascript/reference#LatLngLiteral
     currentCoords: state => {
-      return state.currentPosition.coords
+      if (state.currentPosition.coords) {
+        return {lat: state.currentPosition.coords.latitude, lng: state.currentPosition.coords.longitude}
+      }
+      return false
     },
 
     mapConfig: state => {

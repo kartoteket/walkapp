@@ -182,7 +182,7 @@ export default {
       var that = this
       var geocoder = new google.maps.Geocoder()
       var infoWindow
-      var pos = {lat: this.currentCoords.latitude, lng: this.currentCoords.longitude}
+      var pos = this.currentCoords
       var mapElm = document.getElementById('funnmap')
       var mapOptions = {
         center: pos,
