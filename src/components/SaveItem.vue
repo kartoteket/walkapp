@@ -5,16 +5,19 @@
     <div role="main" class="webapp__content">
         <div>
 
-          <image-uploader
-            :debug="1"
-            :maxWidth="512"
-            :quality="0.7"
-            :autoRotate="true"
-            outputFormat="verbose"
-            @input="setImage"
-            @onUpload="startImageResize"
-            @onComplete="endImageResize"
-            ></image-uploader>
+          <div class="group" style="text-align: center;">
+
+            <image-uploader
+              :debug="imgConfig.debug"
+              :maxWidth="imgConfig.maxWidth"
+              :quality="imgConfig.quality"
+              :autoRotate="imgConfig.autoRotate"
+              outputFormat="imgConfig.outputFormat"
+              @input="setImage"
+              @onUpload="startImageResize"
+              @onComplete="endImageResize"
+              ></image-uploader>
+          </div>
 
           <div class="group form">
             <label class="item-desc">Beskrivelse</label>
@@ -82,7 +85,6 @@
 </template>
 
 <script>
-var Config = require('setup')
 import RangeSlider from 'vue-range-slider'
 import Selector from './Selector'
 import { ImageUploader } from 'vue-image-upload-resize'
@@ -122,7 +124,8 @@ export default {
       message: state => state.newItem.message,
       position: state => state.newItem.position,
       image: state => state.newItem.image,
-      loginUrl: state => state.config.rootUrl + '/vandringer/users/login'
+      loginUrl: state => state.config.rootUrl + '/vandringer/users/login',
+      imgConfig: state => state.config.imgConfig
     }),
 
     draft: function () {
@@ -253,7 +256,6 @@ export default {
   created: function () {
     this.$store.commit('TOGGLE_LOADING', false)
 
-    console.log(Config)
     // ping session to make sure we have a user
     // this.checkUser()
   }

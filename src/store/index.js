@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import moment from 'moment'
 import actions from './actions.js'
+import config from 'appConfig'
 
 Vue.use(Vuex)
 
@@ -25,7 +26,9 @@ if (hostname.indexOf('.dev') >= 0 || hostname.indexOf('localhost') >= 0) { // pr
   serverEnv = 'staging'
 }
 const isProduction = serverEnv === 'prod'
+
 console.log('Environment: ' + serverEnv)
+// console.log(config)
 
 export default new Vuex.Store({
   state: {
@@ -49,17 +52,9 @@ export default new Vuex.Store({
       rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + window.location.hostname,
       itemsSectionId: isProduction ? 7 : 7, // currently in sync, but that may change
       highlightfirst: false,
-      geoConfig: {
-        enabled: false,  // Todo: Probably best to move this pout of config
-        maximumAge: 5 * 60 * 1000,
-        timeout: 10 * 1000,
-        enableHighAccuracy: true
-      },
-      mapConfig: {
-        zoomBase: 18,
-        zoomLow: 5,
-        zoomHigh: 20
-      }
+      geoConfig: config.geoConfig,
+      mapConfig: config.mapConfig,
+      imgConfig: config.imageUploader
     }
   },
 
@@ -97,8 +92,11 @@ export default new Vuex.Store({
 
     geoConfig: state => {
       return state.config.geoConfig
-    }
+    },
 
+    imgConfig: state => {
+      return state.config.imgConfig
+    }
   },
 
   mutations: {

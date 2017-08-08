@@ -20,8 +20,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   externals: {
-    // 'Config': JSON.stringify(production ? require('./config.prod.json') : require('./config.dev.json'))
-    'setup': JSON.stringify(require('../setup.json'))
+    appConfig : 'appConfig'  // keep config outside of bundle
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
