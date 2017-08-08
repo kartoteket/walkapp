@@ -1,5 +1,5 @@
 
-(function(window, undefined) {
+(function(window) {
 
     var config = {
       serverUrl: 'https://myserver.com',
