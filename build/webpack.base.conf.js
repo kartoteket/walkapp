@@ -19,6 +19,10 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  externals: {
+    // 'Config': JSON.stringify(production ? require('./config.prod.json') : require('./config.dev.json'))
+    'setup': JSON.stringify(require('../setup.json'))
+  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     modules: [

@@ -1,0 +1,11 @@
+{
+  "serverUrl": "https://myserver.com",
+  "foo": "abc",
+  "imageUplaoder": {
+    "debug": 1,
+    "maxWidth": 512,
+    "quality": 0.7,
+    "autoRotate": false,
+    "outputFormat": "verbose"
+  }
+}

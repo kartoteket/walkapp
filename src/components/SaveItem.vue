@@ -82,6 +82,7 @@
 </template>
 
 <script>
+var Config = require('setup')
 import RangeSlider from 'vue-range-slider'
 import Selector from './Selector'
 import { ImageUploader } from 'vue-image-upload-resize'
@@ -252,6 +253,7 @@ export default {
   created: function () {
     this.$store.commit('TOGGLE_LOADING', false)
 
+    console.log(Config)
     // ping session to make sure we have a user
     // this.checkUser()
   }
