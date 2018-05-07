@@ -188,7 +188,7 @@ export default {
       var mapOptions = {
         center: pos,
         zoom: this.mapConfig.zoomBase,
-        gestureHandling: this.mapConfig.greedy
+        gestureHandling: this.mapConfig.gesture
         // styles: mapStyle
       }
       var icon = {
