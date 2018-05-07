@@ -10,9 +10,10 @@ export default {
      * posting fom another domain, and thus not being authenticated, we use the guest entries plugin endpoint
      * and set the author in an onSave-hook in the backend
      */
-    if (process.env.NODE_ENV === 'development' || !store.state.user.isCurrent) {  // testing from localhost or not current user
+    if (/* process.env.NODE_ENV === 'development' || */!store.state.user.isCurrent) {  // testing from localhost or not current user
       form.append('action', 'GuestEntries/saveEntry')
-      form.append('authorId', store.getters.userId)
+      // form.append('authorId', store.getters.userId)
+      form.append('authorId', '686') // on localhost we fake it to make it
     } else {
       /* normal setup, we just post to the saveEntry */
       form.append('action', 'entries/saveEntry')
@@ -39,7 +40,9 @@ export default {
       form.append('fields[walkItemLocation][longitude]', item.position.lng)
     }
 
-    // TODO: document
+    // In this app, the image is returned from the vue-image-upload-resize plugin.
+    // This has three output formats: String, Blob(file) and Object
+    // We use object, stringify it to json to pass along twith the form and the decode the json in the Craft Plugin Sercvice
     if (item.image) {
       if (item.image instanceof File) {
         form.append('fields[walkItemPhoto]', item.image)

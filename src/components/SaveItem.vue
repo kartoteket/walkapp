@@ -12,11 +12,20 @@
               :maxWidth="imgConfig.maxWidth"
               :quality="imgConfig.quality"
               :autoRotate="imgConfig.autoRotate"
-              outputFormat="imgConfig.outputFormat"
+              :outputFormat="imgConfig.outputFormat"
+              :className="['fileinput', { 'fileinput--small' : imagePreview }]"
               @input="setImage"
               @onUpload="startImageResize"
-              @onComplete="endImageResize"
-              ></image-uploader>
+              @onComplete="endImageResize">
+                  <label for="fileInput" slot="upload-label">
+                    <figure>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                          <path class="path1" d="M9.5 19c0 3.59 2.91 6.5 6.5 6.5s6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5-6.5 2.91-6.5 6.5zM30 8h-7c-0.5-2-1-4-3-4h-8c-2 0-2.5 2-3 4h-7c-1.1 0-2 0.9-2 2v18c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-18c0-1.1-0.9-2-2-2zM16 27.875c-4.902 0-8.875-3.973-8.875-8.875s3.973-8.875 8.875-8.875c4.902 0 8.875 3.973 8.875 8.875s-3.973 8.875-8.875 8.875zM30 14h-4v-2h4v2z"></path>
+                      </svg>
+                    </figure>
+                    <span class="upload-caption">{{fileInputButtonCaption}}</span>
+                  </label>
+              </image-uploader>
           </div>
 
           <div class="group form">
@@ -24,7 +33,7 @@
             <textarea class="form__input" :value="message" @focus="scrollIntoView" @input="setMessage" placeholder="En kort og beskrivende forklaring."></textarea>
           </div>
 
-          <div class="group">
+          <div class="group" v-if="enableTags">
             <label class="item-desc">Merkelapp(er)</label>
             <selector></selector>
           </div>
@@ -47,11 +56,12 @@
             </div>
           </div>
 
+<!--
           <div class="group" v-if="position.address">
             <label class="item-desc">Adresse</label>
             <p>{{ position.address }} (<router-link :to="{ name: 'register'}">endre</router-link>)</p>
           </div>
-
+-->
         </div>
     </div>
 
@@ -67,42 +77,30 @@
     ></footer-component>
 
     <!-- modal for error messages-->
-    <sweet-modal ref="modal" blocking Xhide-close-button :icon=this.modal.type>
-      <span slot="title">{{ this.modal.title }}</span>
-      {{ this.modal.code }} - {{ this.modal.content }}
-
-      <template slot="button" v-if="this.modal.code === 403">
-        <button class="button button--primary" v-on:click="reload">
-          Last siden på ny (omstart)
-        </button>
-        <a :href="loginUrl" target="_blank" class="button button--primary">
-          Logg inn på ny
-        </a>
-      </template>
-    </sweet-modal>
+    <modal ref="modal"></modal>
 
   </div>
 </template>
 
 <script>
 import RangeSlider from 'vue-range-slider'
-import Selector from './Selector'
+// import Selector from './Selector'
 import { ImageUploader } from 'vue-image-upload-resize'
 // import ImageUploader from './Imageuploader'
 import _ from 'lodash/core'
 import animatedScrollTo from 'animated-scrollto'
 import {mapState} from 'vuex'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
-import { SweetModal } from 'sweet-modal-vue'
 
 export default {
   name: 'saveItem',
 
   components: {
-    Selector,
+    // Selector,
+    'Selector': () => import(/* webpackChunkName: "tag-selector" */ './Selector'),
+    'Modal': () => import(/* webpackChunkName: "modal" */ './Modal'),
     ClipLoader,
     RangeSlider,
-    SweetModal,
     ImageUploader
   },
 
@@ -110,7 +108,8 @@ export default {
     return {
       showLogin: false,
       spinnerSize: '100px',
-      priority: 2
+      priority: 2,
+      imagePreview: null
     }
   },
 
@@ -120,12 +119,11 @@ export default {
       user: 'user',
       newItem: 'newItem',
       loading: 'loading',
-      appMessage: 'appMessage',
       message: state => state.newItem.message,
       position: state => state.newItem.position,
       image: state => state.newItem.image,
-      loginUrl: state => state.config.rootUrl + '/vandringer/users/login',
-      imgConfig: state => state.config.imgConfig
+      imgConfig: state => state.config.imgConfig,
+      enableTags: state => state.config.enableTags
     }),
 
     draft: function () {
@@ -141,9 +139,6 @@ export default {
         return 'Oops, du er logget ut.'
       }
 
-      if (!this.activeSession) {
-        return 'Vi sjekker tilgang...'
-      }
       if (this.loading) {
         return 'Lagrer...'
       }
@@ -153,45 +148,14 @@ export default {
       return 'Beskrivelse påkrevd'  // 'Venter på beskrivelse…'
     },
 
-    modal: function () {
-      return {
-        type: this.appMessage.type,
-        code: this.appMessage.code,
-        title: this.appMessage.title,
-        content: this.appMessage.body
-      }
-    },
-
-    // TODO: Move to store ??!?
-    activeSession: function () {
-      // console.log(+this.user.id)
-      // console.log(this.user.name)
-      // console.log(this.user.isCurrent)
-
-      return true // TODO: not solid enough yet. This should be moved to vuex/app init() lifecycle states
-      // return this.user // && this.user.isCurrent <- We now test for this in the form-util and use gusetentryform if not current user
+    fileInputButtonCaption: function () {
+      return this.imagePreview ? 'Endre bildet…' : 'Legg til et bilde…'
     }
   },
 
   watch: {
-
     priority: function (val) {
       this.setPriority()
-    },
-
-    activeSession: function () {
-      this.modal.type = 'error'
-      this.modal.code = 403
-      this.modal.title = 'Vi har et problem!'
-      this.modal.content = 'Vi får ikke verifisert brukeren din. Vennligst logg inn på ny.'
-      this.$refs.modal.open()
-
-      var that = this
-      var interval = this.showLogin ? 0 : 2000
-
-      setTimeout(function () {
-        that.showLogin = !that.activeSession
-      }, interval)
     }
   },
 
@@ -202,6 +166,7 @@ export default {
     },
 
     setImage: function (file) {
+      this.imagePreview = this.imgConfig.outputFormat === 'verbose' ? file.dataUrl : file
       this.$store.commit('SET_IMAGE', file)
     },
 
@@ -240,16 +205,6 @@ export default {
             // console.log(target, element)
           }
       )
-    },
-
-    checkUser: function () {
-      var interval = this.showLogin ? 1000 : 5000
-      this.$store.dispatch('getUser')
-      setTimeout(this.checkUser, interval)
-    },
-
-    reload () {
-      location.reload()
     }
   },
 
@@ -257,7 +212,7 @@ export default {
     this.$store.commit('TOGGLE_LOADING', false)
 
     // ping session to make sure we have a user
-    // this.checkUser()
+    this.$store.dispatch('getUser')
   }
 }
 </script>
@@ -295,12 +250,6 @@ export default {
   @import "~sass-mq/mq";
   @import "~vue-range-slider/dist/vue-range-slider";
 
-  // sweet modal overrides
-  .sweet-modal {
-    .sweet-box-actions .sweet-action-close:hover {
-      background-color: #f59e22 !important;
-    }
-  }
 
   .fileinput {
 

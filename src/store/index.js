@@ -18,16 +18,7 @@ const defaultItem = {
   }
 }
 
-const hostname = window.location.hostname
-let serverEnv = 'prod'
-if (hostname.indexOf('.dev') >= 0 || hostname.indexOf('localhost') >= 0) { // process.env.NODE_ENV === 'development' tests dev vs build in npm
-  serverEnv = 'dev'
-} else if (hostname.indexOf('dev.') >= 0) {
-  serverEnv = 'staging'
-}
-const isProduction = serverEnv === 'prod'
-
-console.log('Environment: ' + serverEnv)
+console.log('Environment: ' + config.env)
 // console.log(config)
 
 export default new Vuex.Store({
@@ -40,22 +31,7 @@ export default new Vuex.Store({
     currentPosition: {},
     loading: false,
     appMessage: {},
-    config: {
-      env: serverEnv,
-      debug: true,
-      sentry: {
-        capture: isProduction,
-        logUser: isProduction,
-        userFeedback: isProduction
-      },
-      apiUrl: '/api',
-      rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + window.location.hostname,
-      itemsSectionId: isProduction ? 7 : 7, // currently in sync, but that may change
-      highlightfirst: false,
-      geoConfig: config.geoConfig,
-      mapConfig: config.mapConfig,
-      imgConfig: config.imageUploader
-    }
+    config: config
   },
 
   getters: {

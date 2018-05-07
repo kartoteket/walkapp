@@ -19,7 +19,7 @@
 /* global google:true */
 import {mapState, mapGetters} from 'vuex'
 import MarkerClusterer from 'node-js-marker-clusterer'
-import mapStyle from '../assets/json/silver.json'
+// import mapStyle from '../assets/json/silver.json'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 export default {
@@ -84,8 +84,8 @@ export default {
 
       var mapOptions = {
         center: {lat: 64.467506, lng: 11.495773},
-        zoom: this.config.mapConfig.zoomLow,
-        styles: mapStyle
+        zoom: this.config.mapConfig.zoomLow
+        // styles: mapStyle
       }
       var mapElm = document.getElementById('funnmap')
       this.map = new google.maps.Map(mapElm, mapOptions)
@@ -136,10 +136,16 @@ export default {
       // zoom map to currentPosition if no markers
       } else {
         if (this.currentCoords) {
-          this.map.setCenter(this.currentCoords)
+          this.centerMap()
         } else {
-          this.$watch('currentCoords', this.map.setCenter(this.currentCoords))
+          this.$watch('currentCoords', that.centerMap)
         }
+      }
+    },
+
+    centerMap: function () {
+      if (this.currentCoords) {
+        this.map.setCenter(this.currentCoords)
       }
     },
 

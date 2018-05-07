@@ -4,7 +4,7 @@
     <header-component></header-component>
 
     <div role="main" class="webapp__content">
-        <div id="funnmap" class="appmap appmap--short"></div>
+        <div id="registermap" class="appmap appmap--short"></div>
 
         <input id="js-pac-input" v-bind:class="{ hidden: selectMode }" class="controls pac-input" type="text" placeholder="Flytt på kartet eller søk etter en adresse">
 
@@ -24,9 +24,8 @@
 <script>
 /* global google:true */
 import _ from 'lodash/core'
-import mapStyle from '../assets/json/silver.json'
+// import mapStyle from '../assets/json/silver.json'
 import {mapGetters, mapState} from 'vuex'
-// import { VTooltip } from 'v-tooltip'
 import { VTooltip } from '../../../vue-tooltip'
 
 VTooltip.options = {
@@ -185,12 +184,12 @@ export default {
       var geocoder = new google.maps.Geocoder()
       var infoWindow
       var pos = this.currentCoords
-      var mapElm = document.getElementById('funnmap')
+      var mapElm = document.getElementById('registermap')
       var mapOptions = {
         center: pos,
         zoom: this.mapConfig.zoomBase,
-        gestureHandling: this.mapConfig.greedy,
-        styles: mapStyle
+        gestureHandling: this.mapConfig.greedy
+        // styles: mapStyle
       }
       var icon = {
         path: 'M10 0.4c-5.303 0-9.601 4.298-9.601 9.6 0 5.303 4.298 9.601 9.601 9.601 5.301 0 9.6-4.298 9.6-9.601s-4.299-9.6-9.6-9.6zM11 17.525v-4.525h-2v4.525c-3.396-0.446-6.080-3.129-6.527-6.525h4.527v-2h-4.527c0.447-3.396 3.131-6.079 6.527-6.525v4.525h2v-4.525c3.394 0.447 6.078 3.13 6.525 6.525h-4.525v2h4.525c-0.447 3.394-3.131 6.078-6.525 6.525z',
@@ -319,7 +318,7 @@ $tooltip_color: #fff;
 $tooltip_arrow_size: 10px;
 
 // Quick fix to remove close button on infowindw
-.gm-style-iw + div {
+#registermap .gm-style-iw + div {
   display: none;
   pointer-events: none;
 }

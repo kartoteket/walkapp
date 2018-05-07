@@ -2,6 +2,34 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2] -  2017-08-11
+
+### Added
+- Enforced user session with new login form
+
+### Changed
+- Changed custom styling of maps
+- Updated Vue from 2.1.10 to 2.4.2
+- Disabled Tags from save screen (config setting)
+- Completes the move of all config variables to external static setup
+
+### Removed
+- Removed address from save screen
+- Removed personal welcome message if user is not logged in
+
+### Fixed
+- Possible error when centering map on GPS position if no items (markers)
+- Re-inserted cloce-button for map tooltips in view-mode
+
+
+## [1.1.1] - 2017-06-21
+
+### Added
+- New external static config file so the settings can be changed without rebuilding and redploying entire app
+
+### Fixed
+- Issue with getting the correct initial settings for geo positioning
+
 ## [1.1.0] - 2017-06-21
 
 ### Changed
@@ -9,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Hide close icon on map select position info window
 - Adjusted basic zoom-levels
 - Adapated zoom levels to if geoPositioning is avilable or not
-- Page title from "Risikorydding" to "Trygghetsvandring" 
+- Page title from "Risikorydding" to "Trygghetsvandring"
 
 ### Added
 - Changelog

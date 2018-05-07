@@ -1,3 +1,6 @@
+
+import 'es6-promise/auto'
+
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
@@ -14,7 +17,7 @@ import VueAnalytics from 'vue-analytics'
 import Header from 'components/Header'
 import Footer from 'components/Footer'
 
-// gloabl components (mayb better registered in App.vue and used in that scope/template ???!?)
+// global components (mayb better registered in App.vue and used in that scope/template ???!?)
 Vue.component('header-component', Header)
 Vue.component('footer-component', Footer)
 
@@ -34,7 +37,8 @@ Vue.use(VueAnalytics, {
 })
 
 // Sentry Raven
-if (process.env.NODE_ENV === 'production') {
+const sentryConfig = store.state.config.sentry
+if (sentryConfig.capture || sentryConfig.userFeedback || sentryConfig.logUser) {
   Raven
       .config('https://97ee13fdbe364d1388393fa9315aacc3@sentry.io/153958')
       .addPlugin(RavenVue, Vue)

@@ -6,7 +6,7 @@
       <template v-if="walk" >
 
         <div role="main" class="webapp__content center-content" v-if="itemsCount < 1">
-          <div>
+          <div v-if="user.isCurrent">
             <label>Hei</label>
             <h2>{{user.name}}</h2>
             <p>&nbsp;</p>

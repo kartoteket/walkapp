@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <router-view class="webapp"></router-view>
+    <!-- modal for error messages-->
+    <modal ref="modal"></modal>
   </div>
+
 </template>
 
 <script>
@@ -9,16 +12,34 @@
 export default {
   name: 'app',
 
-  data: function () {
+  components: {
+    'Modal': () => import(/* webpackChunkName: "modal" */ './components/Modal')
+  },
+
+  data () {
     return {
       walkId: this.$route.params.walk_id
     }
   },
 
+  computed: {
+    appMessage () {
+      return this.$store.state.appMessage
+    }
+  },
+
   // initApp
-  created: function () {
+  created () {
     if (this.walkId) {
       this.$store.dispatch('initApp')
+    }
+  },
+
+  watch: {
+    appMessage (val, oldVal) {
+      if (this.$refs.modal && val.code === 401) {
+        this.$refs.modal.open()
+      }
     }
   }
 }
