@@ -26,6 +26,7 @@
 import _ from 'lodash/core'
 import mapStyle from '../assets/json/silver.json'
 import {mapGetters, mapState} from 'vuex'
+// import { VTooltip } from 'v-tooltip'
 import { VTooltip } from '../../../vue-tooltip'
 
 VTooltip.options = {
@@ -188,6 +189,7 @@ export default {
       var mapOptions = {
         center: pos,
         zoom: this.mapConfig.zoomBase,
+        gestureHandling: this.mapConfig.greedy,
         styles: mapStyle
       }
       var icon = {
