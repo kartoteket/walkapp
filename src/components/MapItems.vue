@@ -85,7 +85,7 @@ export default {
       var mapOptions = {
         center: {lat: 64.467506, lng: 11.495773},
         zoom: this.config.mapConfig.zoomLow,
-        gestureHandling: this.mapConfig.gesture
+        gestureHandling: this.config.mapConfig.gesture
 
         // styles: mapStyle
       }
