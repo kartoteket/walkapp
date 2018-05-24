@@ -154,7 +154,9 @@ export default {
           // that.position = that.getAddress(results[0]) // this is always an aproximation
           that.position = pos // use the best most exact lat/lng we can get
           that.position.address = that.getAddress(results[0], 'address') // add address
+          if (input) {
           input.value = that.position.address
+          }
           // console.log(that.position.address)
         }
       })
