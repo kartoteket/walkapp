@@ -60,7 +60,8 @@ export default {
       'geoConfig'
     ]),
     ...mapState({
-      _position: state => state.newItem.position
+      _position: state => state.newItem.position,
+      locationStatus: state => state.locationStatus
     }),
     readyToSubmit: function () {
       return !this.currentCoords || false
@@ -154,7 +155,9 @@ export default {
           // that.position = that.getAddress(results[0]) // this is always an aproximation
           that.position = pos // use the best most exact lat/lng we can get
           that.position.address = that.getAddress(results[0], 'address') // add address
-          input.value = that.position.address
+          if (input) {
+            input.value = that.position.address
+          }
           // console.log(that.position.address)
         }
       })
@@ -188,7 +191,8 @@ export default {
       var mapOptions = {
         center: pos,
         zoom: this.mapConfig.zoomBase,
-        gestureHandling: this.mapConfig.gesture
+        gestureHandling: this.mapConfig.gesture,
+        clickableIcons: false
         // styles: mapStyle
       }
       var icon = {
@@ -228,7 +232,7 @@ export default {
 
             // Wait for the infoWindow to be added before hookig up events
             google.maps.event.addListener(infoWindow, 'domready', function () {
-              // cancel if user has navigated away before domready
+            // cancel if user has navigated away before domready
               if (that.$store.state.route.name !== 'register') {
                 return true
               }
@@ -239,16 +243,15 @@ export default {
                 that.map.panBy(infowindow.offsetWidth / -2, infowindow.offsetHeight / 2)
               }
 
-              // edit location
-              const edit = document.getElementsByClassName('js-infowindow--editlocation')
-              edit[0].addEventListener('click', function (e) {
-                e.preventDefault()
-                infoWindow.close()
-                that.editLocation()
-              })
-
-              // select location
+              // click handlers
               document.addEventListener('click', function (e) {
+                // edit location
+                if (e.target.classList.contains('js-infowindow--editlocation')) {
+                  infoWindow.close()
+                  that.editLocation()
+                }
+
+                // select location
                 if (e.target.classList.contains('js-infowindow--selectlocation')) {
                   that.selectLocation()
                 }
@@ -282,10 +285,13 @@ export default {
       // params += '&key=' + this.static_api_key
 
       // img = '<img class="infowindow__img" src="' + url +  params  + '">'
-      header = '<div class="infowindow__header"><h1>Flytt på kartet for å velge sted</h1><h2 title="' + this.position.address + '">' + streetAddress + '</h2></div>'
+      header = '<div class="infowindow__header"><h1>' +
+      (this.selectMode ? this.locationStatus + ':' : 'Flytt på kartet for å velge sted') +
+      '</h1><h2 title="' + this.position.address + '">' + streetAddress + '</h2></div>'
       footer = '<div class="infowindow__footer">' +
-               (this.selectMode ? '<button class="button width-50% js-infowindow js-infowindow--editlocation gutter-half--right">Nei, endre</button>' : '') +
-               '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button></div>'
+               (this.selectMode ? '<button class="button width-50% js-infowindow js-infowindow--editlocation gutter-half--right">' + (this.geoConfig.enabled ? 'Nei, endre' : 'Velg manuelt') + '</button>' : '') +
+               (this.geoConfig.enabled || this.editMode ? '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button>' : '') +
+               '</div>'
 
       return '<div class="infowindow">' + header + img + footer + '</div>'
     }
@@ -505,10 +511,10 @@ $tooltip_arrow_size: 10px;
   border-right-color: $tooltip_color;
 } */
 
-.tooltip-element.tooltip-theme-arrows {
-  /*pointer-events: none; */
+/* .tooltip-element.tooltip-theme-arrows {
+  pointer-events: none;
 }
-
+ */
 .tooltip-element.tooltip-theme-arrows .tooltip-content {
   padding: 0.5em 1em;
 }

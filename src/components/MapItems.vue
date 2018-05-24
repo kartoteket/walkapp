@@ -85,7 +85,7 @@ export default {
       var mapOptions = {
         center: {lat: 64.467506, lng: 11.495773},
         zoom: this.config.mapConfig.zoomLow,
-        gestureHandling: this.mapConfig.gesture
+        gestureHandling: this.config.mapConfig.gesture
 
         // styles: mapStyle
       }
@@ -186,10 +186,17 @@ export default {
   // },
 
   mounted: function () {
-    this.createMapMarkers()
+    setTimeout(() => { this.createMapMarkers() }, 1000) // rotten way to wait for google maps to be loaded
+
     // if (this.items.length) {
-    //   this.createMapMarkers()
+      //   this.createMapMarkers()
     // }
   }
 }
 </script>
+
+<style>
+  .infowindow__img {
+    width: 200px;
+  }
+</style>

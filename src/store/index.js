@@ -29,6 +29,7 @@ export default new Vuex.Store({
     tags: [],
     newItem: Object.assign({}, defaultItem),
     currentPosition: {},
+    locationStatus: 'Din lokasjon',
     loading: false,
     appMessage: {},
     config: config
@@ -121,6 +122,11 @@ export default new Vuex.Store({
       state.config.geoConfig.enabled = !!data.timestamp // if position is from sensors or static
       state.currentPosition = data
     },
+
+    LOCATION_STATUS: (state, data) => {
+      state.locationStatus = data
+    },
+
     TOGGLE_HIGHLIGHT_FIRST: (state, force) => {
       state.config.highlightfirst = (force === false || force === true) ? !!force : !state.config.highlightfirst
     },

@@ -91,22 +91,32 @@ export default {
     var geoOptions = context.state.config.geoConfig
 
     var geoError = function (error) {
-      // error.code can be:
-      //  0: unknown error,
-      //  1: permission denied,
-      //  2: position unavailable (error response from location provider),
-      //  3: timed out
-      console.log('Error occurred. Error code: ' + error.code)
+      var errorCodes = [
+        'Unknown error',
+        'Permission denied',
+        'Position unavailable', //  (error response from location provider)
+        'Geo Loacation Timed out',
+        'Your browser doesn\'t support geolocation' // my custom message
+      ]
+      console.log('Error occurred. Error code: ' + error.code + ': ' + errorCodes[error.code])
       const staticPosition = {coords: {latitude: 59.912702, longitude: 10.745366}}  // stortorvet, Oslo
       context.commit('SET_CURRENT_POSITION', staticPosition)
+      context.commit('LOCATION_STATUS', 'Ukjent posisjon <br><small>(' + errorCodes[error.code] + ')</small>')
     }
 
     var geoSuccess = function (position) {
       // console.log(position, (that.currentPosition.timestamp === position.timestamp ? 'cached' : 'new'))
       context.commit('SET_CURRENT_POSITION', position)
+      context.commit('LOCATION_STATUS', 'Din lokasjon')
     }
 
-    navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
+    } else {
+      // Browser doesn't support Geolocation
+      geoError({code: 4})
+    }
   },
 
   saveItem: (context) => {
