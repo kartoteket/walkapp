@@ -242,16 +242,15 @@ export default {
                 that.map.panBy(infowindow.offsetWidth / -2, infowindow.offsetHeight / 2)
               }
 
+              // click handlers
+              document.addEventListener('click', function (e) {
               // edit location
-              const edit = document.getElementsByClassName('js-infowindow--editlocation')
-              edit[0].addEventListener('click', function (e) {
-                e.preventDefault()
+                if (e.target.classList.contains('js-infowindow--editlocation')) {
                 infoWindow.close()
                 that.editLocation()
-              })
+                }
 
               // select location
-              document.addEventListener('click', function (e) {
                 if (e.target.classList.contains('js-infowindow--selectlocation')) {
                   that.selectLocation()
                 }
