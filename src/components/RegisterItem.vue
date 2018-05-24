@@ -190,7 +190,8 @@ export default {
       var mapOptions = {
         center: pos,
         zoom: this.mapConfig.zoomBase,
-        gestureHandling: this.mapConfig.gesture
+        gestureHandling: this.mapConfig.gesture,
+        clickableIcons: false
         // styles: mapStyle
       }
       var icon = {
