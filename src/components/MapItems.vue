@@ -189,8 +189,14 @@ export default {
     setTimeout(() => { this.createMapMarkers() }, 1000) // rotten way to wait for google maps to be loaded
 
     // if (this.items.length) {
-    //   this.createMapMarkers()
+      //   this.createMapMarkers()
     // }
   }
 }
 </script>
+
+<style>
+  .infowindow__img {
+    width: 200px;
+  }
+</style>
