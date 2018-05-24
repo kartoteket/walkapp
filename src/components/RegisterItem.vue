@@ -156,7 +156,7 @@ export default {
           that.position = pos // use the best most exact lat/lng we can get
           that.position.address = that.getAddress(results[0], 'address') // add address
           if (input) {
-          input.value = that.position.address
+            input.value = that.position.address
           }
           // console.log(that.position.address)
         }
@@ -232,7 +232,7 @@ export default {
 
             // Wait for the infoWindow to be added before hookig up events
             google.maps.event.addListener(infoWindow, 'domready', function () {
-              // cancel if user has navigated away before domready
+            // cancel if user has navigated away before domready
               if (that.$store.state.route.name !== 'register') {
                 return true
               }
@@ -245,13 +245,13 @@ export default {
 
               // click handlers
               document.addEventListener('click', function (e) {
-              // edit location
+                // edit location
                 if (e.target.classList.contains('js-infowindow--editlocation')) {
-                infoWindow.close()
-                that.editLocation()
+                  infoWindow.close()
+                  that.editLocation()
                 }
 
-              // select location
+                // select location
                 if (e.target.classList.contains('js-infowindow--selectlocation')) {
                   that.selectLocation()
                 }
@@ -511,10 +511,10 @@ $tooltip_arrow_size: 10px;
   border-right-color: $tooltip_color;
 } */
 
-.tooltip-element.tooltip-theme-arrows {
-  /*pointer-events: none; */
+/* .tooltip-element.tooltip-theme-arrows {
+  pointer-events: none;
 }
-
+ */
 .tooltip-element.tooltip-theme-arrows .tooltip-content {
   padding: 0.5em 1em;
 }

@@ -29,7 +29,7 @@ export default new Vuex.Store({
     tags: [],
     newItem: Object.assign({}, defaultItem),
     currentPosition: {},
-    locationStatus: 'Din posisjon',
+    locationStatus: 'Din lokasjon',
     loading: false,
     appMessage: {},
     config: config
