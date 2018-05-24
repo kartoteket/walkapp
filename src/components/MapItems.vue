@@ -186,7 +186,8 @@ export default {
   // },
 
   mounted: function () {
-    this.createMapMarkers()
+    setTimeout(() => { this.createMapMarkers() }, 1000) // rotten way to wait for google maps to be loaded
+
     // if (this.items.length) {
     //   this.createMapMarkers()
     // }
