@@ -86,6 +86,14 @@ export default {
     }
   },
 
+  // watch: {
+  //   // whenever location changes...
+  //   currentCoords: function (newPosition, oldPosition) {
+  //     console.log('Position has changed')
+  //     this.selectPosition()
+  //   }
+  // },
+
   methods: {
 
     editLocation: function () {
