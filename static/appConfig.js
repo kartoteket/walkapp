@@ -27,7 +27,13 @@
       zoomBase: 18,
       zoomLow: 5,
       zoomHigh: 20,
-      gesture: 'greedy'
+      gesture: 'greedy',   // enables single finger panning
+      zoomControl: true,
+      // mapTypeControl: true,
+      // scaleControl: true,
+      // streetViewControl: true,
+      // rotateControl: true,
+      fullscreenControl: false
     },
     imgConfig: {
       debug: 1,

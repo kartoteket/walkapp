@@ -204,6 +204,7 @@ export default {
         center: pos,
         zoom: this.mapConfig.zoomBase,
         gestureHandling: this.mapConfig.gesture,
+        fullscreenControl: this.mapConfig.fullscreenControl,
         clickableIcons: false
         // styles: mapStyle
       }
