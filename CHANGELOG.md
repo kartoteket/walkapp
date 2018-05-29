@@ -2,6 +2,24 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.3] -  2018-05-29
+
+### Added
+- A more adanced business logic and error handlig for get the location of the user
+- More specific feedback to the user on the status of the app and geo positioning
+- Set max width on images in map infowindows
+
+### Changed
+- Delay first attempt to get location so that the user gets the prompt in a better context
+- A less aggresiv caching of current loaction so that movement is better reflected
+
+### Removed
+- Remove click events on google map info icons
+- Disabled fullscreenmode in Google Maps to prevent UX errors
+
+### Fixed
+- Fix error in reference to config object (for gesturehandling)
+
 ## [1.2.1] -  2018-04-07
 
 ### Changed
