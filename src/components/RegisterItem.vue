@@ -307,10 +307,15 @@ export default {
       // img = '<img class="infowindow__img" src="' + url +  params  + '">'
       header = '<div class="infowindow__header"><h1>' +
       (this.selectMode ? this.locationStatus + ':' : 'Flytt på kartet for å velge sted') +
-      '</h1><h2 title="' + this.position.address + '">' + streetAddress + '</h2></div>'
+      '</h1>' +
+      (this.geoConfig.enabled ? '<h2 title="' + this.position.address + '">' + streetAddress + '</h2>' : '') +
+      '</div>'
+
       footer = '<div class="infowindow__footer">' +
                (this.selectMode ? '<button class="button width-50% js-infowindow js-infowindow--editlocation gutter-half--right">' + (this.geoConfig.enabled ? 'Nei, endre' : 'Velg manuelt') + '</button>' : '') +
-               (this.geoConfig.enabled || this.editMode ? '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button>' : '') +
+// not YET IN USE
+//                (!this.geoConfig.enabled ? '<button class="button width-50% button--primary js-infowindow js-infowindow--getlocation"><svg class="icon"><use xlink:href="#icon-my_location"></use></svg></button>' : '') +
+                (this.geoConfig.enabled || this.editMode ? '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button>' : '') +
                '</div>'
 
       return '<div class="infowindow">' + header + img + footer + '</div>'
