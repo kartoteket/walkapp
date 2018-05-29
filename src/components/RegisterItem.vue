@@ -102,7 +102,7 @@ export default {
       var input = document.getElementById('js-pac-input')
       var center = this.getMapCenter()
 
-      // this.loading = false
+      this.loading = false
       this.editMode = true
       this.selectMode = false
 
