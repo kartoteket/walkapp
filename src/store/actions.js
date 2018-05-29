@@ -13,7 +13,7 @@ export default {
     }
     context.dispatch('getItems')
     context.dispatch('getTags')
-    context.dispatch('getLocation')
+    // context.dispatch('getLocation') // wait until needed !
   },
 
   getWalk: (context, id) => {
@@ -88,26 +88,46 @@ export default {
   },
 
   getLocation: (context) => {
+    // context.commit('TOGGLE_LOADING', true)
+    console.log('getting location')
     var geoOptions = context.state.config.geoConfig
 
     var geoError = function (error) {
       var errorCodes = [
-        'Unknown error',
-        'Permission denied',
-        'Position unavailable', //  (error response from location provider)
-        'Geo Loacation Timed out',
-        'Your browser doesn\'t support geolocation' // my custom message
+        'Ukjent feil',
+        'Mangler tilgang til posisjon',
+        'Position ikke tilgjengelig', //  (error response from location provider)
+        'Lokalisering avbrutt ',
+        'Din nettleser støttert ikke geolokalisering' // my custom message
       ]
       console.log('Error occurred. Error code: ' + error.code + ': ' + errorCodes[error.code])
-      const staticPosition = {coords: {latitude: 59.912702, longitude: 10.745366}}  // stortorvet, Oslo
+
+      // if geolacation is denied and message has not been shown user before, nudge them with a modal
+      if (error.code === 1 && context.state.appMessage.code !== 666) {
+        const error = {
+          response: {
+            statusText: 'Mangler position!',
+            status: 666
+          }
+        }
+        errors.handler(context, error)
+      }
+
+      // Use last available position or default to stortorvet, Oslo
+
+      console.log(context.state.currentPosition.coords)
+      console.log({coords: {latitude: 59.912702, longitude: 10.745366}})
+      const staticPosition = context.state.currentPosition.coords || {coords: {latitude: 59.912702, longitude: 10.745366}}
       context.commit('SET_CURRENT_POSITION', staticPosition)
       context.commit('LOCATION_STATUS', 'Ukjent posisjon <br><small>(' + errorCodes[error.code] + ')</small>')
+      context.commit('TOGGLE_LOADING', false)
     }
 
     var geoSuccess = function (position) {
-      // console.log(position, (that.currentPosition.timestamp === position.timestamp ? 'cached' : 'new'))
+      console.log(position, (context.state.currentPosition.timestamp === position.timestamp ? 'cached' : 'new'))
       context.commit('SET_CURRENT_POSITION', position)
       context.commit('LOCATION_STATUS', 'Din lokasjon')
+      context.commit('TOGGLE_LOADING', false)
     }
 
     // Try HTML5 geolocation.

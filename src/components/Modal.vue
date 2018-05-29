@@ -8,6 +8,13 @@
         {{ errors }}
       </div>
 
+      <div v-if="modal.code === 666 ">
+        <button class="button button--primary" v-on:click="close">
+          Lukk
+        </button>
+      </div>
+
+
       <div v-if="modal.code === 403 || modal.code === 401">
 
         <form accept-charset="UTF-8" @submit.prevent="doLogin" class="form">
@@ -101,6 +108,7 @@ export default {
     },
     close () {
       this.$refs.modal.close()
+      this.$store.commit('TOGGLE_LOADING', false)
     },
     reload () {
       location.reload()
@@ -161,7 +169,7 @@ export default {
     color: #000;
     font-size: 0.8125rem;
     -webkit-font-smoothing: antialiased;
-    vertical-align: middle;
+    // vertical-align: middle;
   }
 }
 

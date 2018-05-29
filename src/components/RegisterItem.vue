@@ -13,6 +13,11 @@
         </div>
     </div>
 
+    <!-- <div  v-if="loading" class="is-loading">
+      <clip-loader :loading="loading" :size="spinnerSize"></clip-loader>
+    </div> -->
+
+
     <footer-component
         :readyToSubmit="readyToSubmit"
         :submitButtonCaption="submitButtonCaption"
@@ -27,6 +32,7 @@ import _ from 'lodash/core'
 // import mapStyle from '../assets/json/silver.json'
 import {mapGetters, mapState} from 'vuex'
 import { VTooltip } from '../../../vue-tooltip'
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 VTooltip.options = {
   defaultClass: 'tooltip-theme-arrows',
@@ -36,6 +42,10 @@ VTooltip.options = {
 export default {
   name: 'register',
 
+  components: {
+    ClipLoader
+  },
+
   data: function () {
     return {
       api_key: 'AIzaSyClPBnzKxMZpZXQmBTB-ZWjDN7XEL8ixN0',
@@ -44,6 +54,7 @@ export default {
       editMode: false,
       map: {},
       position: this._position || {},
+      spinnerSize: '100px',
       loading: true
     }
   },
@@ -62,6 +73,7 @@ export default {
     ...mapState({
       _position: state => state.newItem.position,
       locationStatus: state => state.locationStatus
+      // loading: state => state.loading
     }),
     readyToSubmit: function () {
       return !this.currentCoords || false
@@ -74,6 +86,14 @@ export default {
     }
   },
 
+  // watch: {
+  //   // whenever location changes...
+  //   currentCoords: function (newPosition, oldPosition) {
+  //     console.log('Position has changed')
+  //     this.selectPosition()
+  //   }
+  // },
+
   methods: {
 
     editLocation: function () {
@@ -82,7 +102,7 @@ export default {
       var input = document.getElementById('js-pac-input')
       var center = this.getMapCenter()
 
-      // this.loading = false
+      this.loading = false
       this.editMode = true
       this.selectMode = false
 
@@ -192,6 +212,7 @@ export default {
         center: pos,
         zoom: this.mapConfig.zoomBase,
         gestureHandling: this.mapConfig.gesture,
+        fullscreenControl: this.mapConfig.fullscreenControl,
         clickableIcons: false
         // styles: mapStyle
       }
@@ -245,7 +266,14 @@ export default {
 
               // click handlers
               document.addEventListener('click', function (e) {
-                // edit location
+              // trigger get location
+              // NOT YET IN USE: A button to have the user position him/herself
+              // if (e.target.classList.contains('js-infowindow--getlocation')) {
+              //   that.$store.commit('TOGGLE_LOADING', true)
+              //   that.$store.dispatch('getLocation')
+              // }
+
+              // edit location
                 if (e.target.classList.contains('js-infowindow--editlocation')) {
                   infoWindow.close()
                   that.editLocation()
@@ -287,10 +315,15 @@ export default {
       // img = '<img class="infowindow__img" src="' + url +  params  + '">'
       header = '<div class="infowindow__header"><h1>' +
       (this.selectMode ? this.locationStatus + ':' : 'Flytt på kartet for å velge sted') +
-      '</h1><h2 title="' + this.position.address + '">' + streetAddress + '</h2></div>'
+      '</h1>' +
+      (this.geoConfig.enabled ? '<h2 title="' + this.position.address + '">' + streetAddress + '</h2>' : '') +
+      '</div>'
+
       footer = '<div class="infowindow__footer">' +
                (this.selectMode ? '<button class="button width-50% js-infowindow js-infowindow--editlocation gutter-half--right">' + (this.geoConfig.enabled ? 'Nei, endre' : 'Velg manuelt') + '</button>' : '') +
-               (this.geoConfig.enabled || this.editMode ? '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button>' : '') +
+// not YET IN USE
+//                (!this.geoConfig.enabled ? '<button class="button width-50% button--primary js-infowindow js-infowindow--getlocation"><svg class="icon"><use xlink:href="#icon-my_location"></use></svg></button>' : '') +
+                (this.geoConfig.enabled || this.editMode ? '<button class="button width-50% button--primary js-infowindow js-infowindow--selectlocation" >Ja,&nbsp;fortsett</button>' : '') +
                '</div>'
 
       return '<div class="infowindow">' + header + img + footer + '</div>'
@@ -299,9 +332,10 @@ export default {
 
   created: function () {
     // fetch Location
-    if (!this.currentCoords) {
-      this.$store.dispatch('getLocation')
-    }
+    // if (!this.currentCoords) {
+    console.log('Getting location on load')
+    this.$store.dispatch('getLocation')
+    // }
   },
 
   mounted: function () {

@@ -37,7 +37,7 @@ export default {
 
   watch: {
     appMessage (val, oldVal) {
-      if (this.$refs.modal && val.code === 401) {
+      if (this.$refs.modal/* && val.code === 401 */) {
         this.$refs.modal.open()
       }
     }
@@ -46,11 +46,6 @@ export default {
 </script>
 
 <style>
-#app {
-/*  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;*/
-}
 
 .is-loading {
   position: absolute;

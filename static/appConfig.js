@@ -19,7 +19,7 @@
     enableTags: false,
     geoConfig: {
       enabled: false,
-      maximumAge: 5 * 60 * 1000,
+      maximumAge: 0.5 * 60 * 1000,
       timeout: 10 * 1000,
       enableHighAccuracy: true
     },
@@ -27,7 +27,13 @@
       zoomBase: 18,
       zoomLow: 5,
       zoomHigh: 20,
-      gesture: 'greedy'
+      gesture: 'greedy',   // enables single finger panning
+      zoomControl: true,
+      // mapTypeControl: true,
+      // scaleControl: true,
+      // streetViewControl: true,
+      // rotateControl: true,
+      fullscreenControl: false
     },
     imgConfig: {
       debug: 1,
