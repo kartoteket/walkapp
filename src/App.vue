@@ -37,7 +37,7 @@ export default {
 
   watch: {
     appMessage (val, oldVal) {
-      if (this.$refs.modal && val.code === 401) {
+      if (this.$refs.modal/* && val.code === 401 */) {
         this.$refs.modal.open()
       }
     }
