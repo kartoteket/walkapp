@@ -258,7 +258,14 @@ export default {
 
               // click handlers
               document.addEventListener('click', function (e) {
-                // edit location
+              // trigger get location
+              // NOT YET IN USE: A button to have the user position him/herself
+              // if (e.target.classList.contains('js-infowindow--getlocation')) {
+              //   that.$store.commit('TOGGLE_LOADING', true)
+              //   that.$store.dispatch('getLocation')
+              // }
+
+              // edit location
                 if (e.target.classList.contains('js-infowindow--editlocation')) {
                   infoWindow.close()
                   that.editLocation()
