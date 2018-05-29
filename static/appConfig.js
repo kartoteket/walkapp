@@ -19,7 +19,7 @@
     enableTags: false,
     geoConfig: {
       enabled: false,
-      maximumAge: 5 * 60 * 1000,
+      maximumAge: 0.5 * 60 * 1000,
       timeout: 10 * 1000,
       enableHighAccuracy: true
     },

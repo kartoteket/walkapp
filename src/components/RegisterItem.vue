@@ -324,9 +324,10 @@ export default {
 
   created: function () {
     // fetch Location
-    if (!this.currentCoords) {
-      this.$store.dispatch('getLocation')
-    }
+    // if (!this.currentCoords) {
+    console.log('Getting location on load')
+    this.$store.dispatch('getLocation')
+    // }
   },
 
   mounted: function () {
