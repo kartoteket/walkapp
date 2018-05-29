@@ -13,6 +13,11 @@
         </div>
     </div>
 
+    <!-- <div  v-if="loading" class="is-loading">
+      <clip-loader :loading="loading" :size="spinnerSize"></clip-loader>
+    </div> -->
+
+
     <footer-component
         :readyToSubmit="readyToSubmit"
         :submitButtonCaption="submitButtonCaption"
@@ -27,6 +32,7 @@ import _ from 'lodash/core'
 // import mapStyle from '../assets/json/silver.json'
 import {mapGetters, mapState} from 'vuex'
 import { VTooltip } from '../../../vue-tooltip'
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 VTooltip.options = {
   defaultClass: 'tooltip-theme-arrows',
@@ -36,6 +42,10 @@ VTooltip.options = {
 export default {
   name: 'register',
 
+  components: {
+    ClipLoader
+  },
+
   data: function () {
     return {
       api_key: 'AIzaSyClPBnzKxMZpZXQmBTB-ZWjDN7XEL8ixN0',
@@ -44,6 +54,7 @@ export default {
       editMode: false,
       map: {},
       position: this._position || {},
+      spinnerSize: '100px',
       loading: true
     }
   },
@@ -62,6 +73,7 @@ export default {
     ...mapState({
       _position: state => state.newItem.position,
       locationStatus: state => state.locationStatus
+      // loading: state => state.loading
     }),
     readyToSubmit: function () {
       return !this.currentCoords || false
