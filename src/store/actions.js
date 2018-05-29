@@ -13,7 +13,7 @@ export default {
     }
     context.dispatch('getItems')
     context.dispatch('getTags')
-    context.dispatch('getLocation')
+    // context.dispatch('getLocation') // wait until needed !
   },
 
   getWalk: (context, id) => {
