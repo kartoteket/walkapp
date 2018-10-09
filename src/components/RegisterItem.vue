@@ -213,6 +213,7 @@ export default {
         zoom: this.mapConfig.zoomBase,
         gestureHandling: this.mapConfig.gesture,
         fullscreenControl: this.mapConfig.fullscreenControl,
+        streetViewControl: this.mapConfig.streetViewControl,
         clickableIcons: false
         // styles: mapStyle
       }

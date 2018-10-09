@@ -31,7 +31,7 @@
       zoomControl: true,
       // mapTypeControl: true,
       // scaleControl: true,
-      // streetViewControl: true,
+      streetViewControl: false,
       // rotateControl: true,
       fullscreenControl: false
     },

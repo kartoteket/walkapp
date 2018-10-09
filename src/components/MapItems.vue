@@ -85,8 +85,8 @@ export default {
       var mapOptions = {
         center: {lat: 64.467506, lng: 11.495773},
         zoom: this.config.mapConfig.zoomLow,
-        gestureHandling: this.config.mapConfig.gesture
-
+        gestureHandling: this.config.mapConfig.gesture,
+        streetViewControl: this.config.mapConfig.streetViewControl
         // styles: mapStyle
       }
       var mapElm = document.getElementById('funnmap')
