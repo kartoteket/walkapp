@@ -78,9 +78,9 @@ export default {
       return this.$store.state.appMessage
     },
 
-    loginUrl () {
-      return this.$store.state.config.rootUrl + '/vandringer/users/login'
-    },
+    // loginUrl () {
+    //   return this.$store.state.config.rootUrl + '/vandringer/users/login'
+    // },
 
     modal () {
       return {
@@ -115,16 +115,18 @@ export default {
     },
 
     doLogin () {
+      const vm = this
       this.$store.commit('TOGGLE_LOADING', true)
       this.$store.dispatch('loginUser', this.theUser).then((response) => {
-        // console.log(response)
-        if (response.data.success) {
-          this.close()
+        if (response.data.success) {            // if login succeeds:
+          vm.$store.dispatch('getUser')         // 1) get the User and save to store
+          vm.$store.commit('APP_MESSAGE', {})   // 2) resett app message
+          vm.close()                            // 3) close modal
         }
         if (response.data.error) {
           this.errors = response.data.error
         }
-        this.$store.commit('TOGGLE_LOADING', false)
+        vm.$store.commit('TOGGLE_LOADING', false)
       }).catch((error) => {
         // console.log(error)
         this.errors = error
