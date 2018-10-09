@@ -7,6 +7,9 @@ import Raven from 'raven-js'
 export default {
 
   initApp: (context) => {
+    if (context.state.config.debug) {
+      console.log('Initalizing app')
+    }
     context.dispatch('getUser')
     if (!context.state.walk) {
       context.dispatch('getWalk')
