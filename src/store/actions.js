@@ -144,7 +144,6 @@ export default {
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
-      console.log(navigator.geolocation.getCurrentPosition(geoSuccess))
       navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
     } else {
       // Browser doesn't support Geolocation
