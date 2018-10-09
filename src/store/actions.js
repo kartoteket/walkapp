@@ -41,13 +41,23 @@ export default {
 
         // if user is not current (i.e not logged in) abort with error
         if (!response.isCurrent) {
-          const error = {
-            response: {
-              statusText: 'Ikke innlogget',
-              status: 401
+          // fake user when debug is on og local dev env
+          if (context.state.config.env === 'dev' && context.state.config.debug) {
+            user = {
+              email: 'admin@kartoteket.as',
+              id: 1, // 890,
+              name: 'Svale Admin'
             }
+            context.commit('SET_USER', user)
+          } else { // normal error handling
+            const error = {
+              response: {
+                statusText: 'Ikke innlogget',
+                status: 401
+              }
+            }
+            errors.handler(context, error)
           }
-          errors.handler(context, error)
         } else {
           // Deprecated option of using anonymous fallbak user
           // user = {
@@ -117,7 +127,6 @@ export default {
       }
 
       // Use last available position or default to stortorvet, Oslo
-
       console.log(context.state.currentPosition.coords)
       console.log({coords: {latitude: 59.912702, longitude: 10.745366}})
       const staticPosition = context.state.currentPosition.coords || {coords: {latitude: 59.912702, longitude: 10.745366}}
@@ -135,6 +144,7 @@ export default {
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
+      console.log(navigator.geolocation.getCurrentPosition(geoSuccess))
       navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions)
     } else {
       // Browser doesn't support Geolocation
