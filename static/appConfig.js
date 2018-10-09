@@ -11,8 +11,8 @@
 
   const config = {
     env: serverEnv,
-    debug: false,
-    apiUrl: '/api',
+    debug: serverEnv === 'dev',
+    apiUrl: serverEnv === 'dev' ? 'https://risiko.dev/api' : '/api',
     rootUrl: serverEnv === 'dev' ? 'https://risiko.dev' : 'https://' + hostname,
     itemsSectionId: isProduction ? 7 : 7, // currently in sync, but that may change
     highlightfirst: false,
